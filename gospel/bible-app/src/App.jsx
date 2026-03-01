@@ -200,6 +200,9 @@ const THEMES = {
   },
 };
 
+// Use the Vercel environment variable - no key prompt needed
+const EMBEDDED_API_KEY = import.meta.env.VITE_GEMINI_KEY || "";
+
 function getKJV(book, chapter) {
   return KJV[book]?.[chapter]?.map(v => ({ verse: v.v, text: v.t })) || null;
 }
@@ -272,9 +275,6 @@ export default function BibleApp() {
   const [messages, setMessages] = useState([{role:"assistant",content:"Shalom! I'm your Biblical Scholar AI (powered by Gemini).\n\nClick any verse to select it, then tap a quick button or ask me anything:\n\n- Original Greek or Hebrew word meanings\n- Historical & cultural context\n- What scholars & theologians say\n- Cross-references & typology\n\nAll 66 books available. Toggle between KJV and WEB (World English Bible) using the button in the header."}]);
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
-  const [apiKey, setApiKey] = useState("");
-  const [showKeyPrompt, setShowKeyPrompt] = useState(true);
-  const [tempKey, setTempKey] = useState("");
   const [speakingIdx, setSpeakingIdx] = useState(null);
   const chatEnd = useRef(null);
 
@@ -354,10 +354,10 @@ export default function BibleApp() {
     const history = displayed.slice(1).map(m => ({ role: m.role, content: m.content }));
     history[history.length - 1] = { role: "user", content: apiContent };
     try {
-      const reply = await askGemini(history, sys, apiKey);
+      const reply = await askGemini(history, sys, EMBEDDED_API_KEY);
       setMessages([...displayed, { role:"assistant", content:reply }]);
     } catch(e) {
-      setMessages([...displayed, { role:"assistant", content:"Error: " + e.message + "\n\nGet a free Gemini key at aistudio.google.com/apikey and click the Key button." }]);
+      setMessages([...displayed, { role:"assistant", content:"Error: " + e.message }]);
     }
     setThinking(false);
   }
@@ -374,28 +374,6 @@ export default function BibleApp() {
   return (
     <div style={{fontFamily:C.font,background:C.bg,minHeight:"100vh",color:C.text,display:"flex",flexDirection:"column"}}>
       <div style={{position:"fixed",inset:0,background:C.bodyBg,pointerEvents:"none",zIndex:0}} />
-
-      {showKeyPrompt && (
-        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.92)",zIndex:999,display:"flex",alignItems:"center",justifyContent:"center"}}>
-          <div style={{background:C.surface,border:"1px solid " + C.gold,borderRadius:12,padding:32,maxWidth:460,width:"90%",textAlign:"center"}}>
-            <div style={{fontSize:36,marginBottom:12}}>🔑</div>
-            <div style={{color:C.gold,fontSize:18,fontWeight:"bold",marginBottom:8}}>Enter Your Gemini API Key</div>
-            <div style={{color:C.textSec,fontSize:13,marginBottom:4,lineHeight:1.6}}>Get your FREE key at:</div>
-            <div style={{color:C.gold,fontSize:14,marginBottom:4,fontWeight:"bold"}}>aistudio.google.com/apikey</div>
-            <div style={{color:C.textMuted,fontSize:12,marginBottom:20}}>(Sign in with Google, then Get API Key)</div>
-            <input type="password" value={tempKey} onChange={e => setTempKey(e.target.value)}
-              onKeyDown={e => { if (e.key === "Enter" && tempKey.trim()) { setApiKey(tempKey.trim()); setShowKeyPrompt(false); }}}
-              placeholder="AIzaSy..." autoFocus
-              style={{width:"100%",padding:"10px 14px",background:"rgba(255,255,255,0.05)",border:"1px solid " + C.border,borderRadius:8,color:C.text,fontSize:14,fontFamily:"monospace",outline:"none",marginBottom:14,boxSizing:"border-box"}} />
-            <button onClick={() => { if (tempKey.trim()) { setApiKey(tempKey.trim()); setShowKeyPrompt(false); }}}
-              disabled={!tempKey.trim()}
-              style={{background:"linear-gradient(135deg," + C.gold + "," + C.darkGold + ")",border:"none",borderRadius:8,padding:"11px 28px",color:C.bg,fontSize:14,fontWeight:"bold",cursor:"pointer",width:"100%",opacity:tempKey.trim()?1:0.5}}>
-              Start Reading
-            </button>
-            <div style={{color:C.textMuted,fontSize:11,marginTop:12}}>Key stays in your browser only</div>
-          </div>
-        </div>
-      )}
 
       {showThemePicker && (
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:998,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={() => setShowThemePicker(false)}>
@@ -517,7 +495,6 @@ export default function BibleApp() {
                 <div style={{color:C.gold,fontWeight:"bold",fontSize:14}}>✦ Biblical Scholar AI</div>
                 <div style={{color:C.textMuted,fontSize:11,marginTop:1}}>Powered by Gemini · Hebrew · Greek · History</div>
               </div>
-              <button onClick={() => setShowKeyPrompt(true)} style={{background:"none",border:"1px solid " + C.border,color:C.textMuted,fontSize:10,padding:"4px 8px",borderRadius:6,cursor:"pointer",fontFamily:"inherit"}}>🔑 Key</button>
             </div>
             <div style={{flex:1,overflowY:"auto",padding:"14px 14px 6px",display:"flex",flexDirection:"column",gap:11}}>
               {messages.map((m, i) => (
