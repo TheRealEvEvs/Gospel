@@ -399,27 +399,27 @@ export default function BibleApp() {
         </div>
       )}
 
-      <header style={{background:C.headerBg,borderBottom:"1px solid " + C.border,padding:"0 14px",display:"flex",alignItems:"center",gap:8,position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 20px rgba(0,0,0,.6)"}}>
-        <button onClick={() => setSidebarOpen(o => !o)} style={{background:"none",border:"none",color:C.gold,fontSize:20,cursor:"pointer",padding:"16px 6px"}}>☰</button>
+      <header style={{background:C.headerBg,borderBottom:"1px solid " + C.border,padding:"0 14px",display:"flex",alignItems:"center",gap:6,position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 20px rgba(0,0,0,.6)",height:54}}>
+        <button onClick={() => setSidebarOpen(o => !o)} style={{background:"none",border:"none",color:C.gold,fontSize:20,cursor:"pointer",padding:"0 6px",flexShrink:0}}>☰</button>
         <div style={{flex:1,minWidth:0}}>
           <div style={{fontSize:9,letterSpacing:4,color:C.textMuted,textTransform:"uppercase",marginBottom:1}}>{isNT?"New Testament":"Old Testament"} · {translation}</div>
           <div style={{fontSize:19,fontWeight:"bold",color:C.gold,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{book} — Chapter {chapter}</div>
         </div>
-        <div style={{display:"flex",gap:5,alignItems:"center",flexShrink:0}}>
-          <button onClick={() => chapter > 1 && setChapter(c => c-1)} disabled={chapter<=1} style={{background:"rgba(180,140,60,.1)",border:"1px solid " + C.border,color:C.gold,width:29,height:29,borderRadius:4,cursor:chapter<=1?"not-allowed":"pointer",fontSize:15,opacity:chapter<=1?0.3:1}}>‹</button>
-          <span style={{color:C.textMuted,fontSize:11,minWidth:36,textAlign:"center"}}>{chapter}/{totalCh}</span>
-          <button onClick={() => chapter < totalCh && setChapter(c => c+1)} disabled={chapter>=totalCh} style={{background:"rgba(180,140,60,.1)",border:"1px solid " + C.border,color:C.gold,width:29,height:29,borderRadius:4,cursor:chapter>=totalCh?"not-allowed":"pointer",fontSize:15,opacity:chapter>=totalCh?0.3:1}}>›</button>
+        <div style={{display:"flex",gap:4,alignItems:"center",flexShrink:0}}>
+          <button onClick={() => chapter > 1 && setChapter(c => c-1)} disabled={chapter<=1} style={{background:"rgba(180,140,60,.1)",border:"1px solid " + C.border,color:C.gold,width:28,height:28,borderRadius:4,cursor:chapter<=1?"not-allowed":"pointer",fontSize:15,opacity:chapter<=1?0.3:1,display:"flex",alignItems:"center",justifyContent:"center"}}>‹</button>
+          <span style={{color:C.textMuted,fontSize:11,minWidth:32,textAlign:"center"}}>{chapter}/{totalCh}</span>
+          <button onClick={() => chapter < totalCh && setChapter(c => c+1)} disabled={chapter>=totalCh} style={{background:"rgba(180,140,60,.1)",border:"1px solid " + C.border,color:C.gold,width:28,height:28,borderRadius:4,cursor:chapter>=totalCh?"not-allowed":"pointer",fontSize:15,opacity:chapter>=totalCh?0.3:1,display:"flex",alignItems:"center",justifyContent:"center"}}>›</button>
         </div>
         <button onClick={() => setTranslation(t => t==="KJV"?"WEB":"KJV")} style={{background:"rgba(180,140,60,.1)",border:"1px solid " + C.border,color:C.gold,padding:"6px 10px",borderRadius:14,cursor:"pointer",fontSize:11,fontWeight:"bold",flexShrink:0}}>
           {translation==="KJV"?"WEB":"KJV"}
         </button>
-        <button onClick={speakChapter} style={{background:speakingIdx==="ch"?"rgba(201,168,76,0.25)":"rgba(180,140,60,.1)",border:"1px solid " + C.border,color:C.gold,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:15,flexShrink:0}}>
+        <button onClick={speakChapter} title="Read aloud" style={{background:speakingIdx==="ch"?"rgba(201,168,76,0.25)":"rgba(180,140,60,.1)",border:"1px solid " + C.border,color:C.gold,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:15,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
           {speakingIdx==="ch"?"⏹":"🔊"}
         </button>
-        <button onClick={() => setChatOpen(o => !o)} style={{background:chatOpen?"linear-gradient(135deg," + C.gold + "," + C.darkGold + ")":"rgba(180,140,60,.1)",border:"1px solid " + C.gold,color:chatOpen?C.bg:C.gold,padding:"7px 13px",borderRadius:18,cursor:"pointer",fontSize:12,fontWeight:"bold",flexShrink:0}}>
+        <button onClick={() => setChatOpen(o => !o)} style={{background:chatOpen?"linear-gradient(135deg," + C.gold + "," + C.darkGold + ")":"rgba(180,140,60,.1)",border:"1px solid " + C.gold,color:chatOpen?C.bg:C.gold,padding:"6px 12px",borderRadius:16,cursor:"pointer",fontSize:12,fontWeight:"bold",flexShrink:0,whiteSpace:"nowrap"}}>
           {chatOpen?"✕ Close":"📜 Scholar AI"}
         </button>
-        <button onClick={() => setShowThemePicker(t => !t)} style={{background:"rgba(180,140,60,.1)",border:"1px solid " + C.border,color:C.gold,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:15,flexShrink:0}}>
+        <button onClick={() => setShowThemePicker(t => !t)} title="Theme" style={{background:"rgba(180,140,60,.1)",border:"1px solid " + C.border,color:C.gold,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:15,flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
           🎨
         </button>
       </header>
@@ -446,7 +446,7 @@ export default function BibleApp() {
         </aside>
         {sidebarOpen && <div onClick={() => setSidebarOpen(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:199}} />}
 
-        <main style={{flex:1,padding:"18px 24px 40px",width:"100%",transition:"all .3s",minWidth:0}}>
+        <main style={{flex:1,padding:"18px 5vw 40px",width:"100%",maxWidth:chatOpen?"100%":"900px",margin:"0 auto",transition:"all .3s",minWidth:0,boxSizing:"border-box"}}>
           {selectedVerses.length > 0 && (
             <div style={{background:"rgba(180,140,60,.07)",border:"1px solid rgba(180,140,60,.22)",borderRadius:8,padding:"10px 14px",marginBottom:16,display:"flex",gap:7,flexWrap:"wrap",alignItems:"center"}}>
               <span style={{color:C.textMuted,fontSize:12}}>📌 {selectedVerses.length} verse{selectedVerses.length>1?"s":""} selected</span>
