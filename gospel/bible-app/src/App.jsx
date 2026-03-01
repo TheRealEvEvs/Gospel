@@ -255,9 +255,9 @@ function MdText({ text, gold }) {
   return (
     <div>
       {text.split("\n").map((line, i) => {
-        if (line.startsWith("### ")) return <div key={i} style={{fontSize:15,fontWeight:"bold",color:g,marginTop:10,marginBottom:3}}>{line.slice(4)}</div>;
-        if (line.startsWith("## "))  return <div key={i} style={{fontSize:16,fontWeight:"bold",color:g,marginTop:12,marginBottom:4}}>{line.slice(3)}</div>;
-        if (line.startsWith("# "))   return <div key={i} style={{fontSize:17,fontWeight:"bold",color:g,marginTop:14,marginBottom:5}}>{line.slice(2)}</div>;
+        if (line.startsWith("### ")) return <div key={i} style={{fontSize:19,fontWeight:"bold",color:g,marginTop:10,marginBottom:3}}>{line.slice(4)}</div>;
+        if (line.startsWith("## "))  return <div key={i} style={{fontSize:21,fontWeight:"bold",color:g,marginTop:12,marginBottom:4}}>{line.slice(3)}</div>;
+        if (line.startsWith("# "))   return <div key={i} style={{fontSize:19,fontWeight:"bold",color:g,marginTop:14,marginBottom:5}}>{line.slice(2)}</div>;
         if (line.match(/^- /))       return <div key={i} style={{paddingLeft:14,marginBottom:3}}>{"\u2022 " + line.slice(2)}</div>;
         if (line.trim() === "")      return <div key={i} style={{height:6}} />;
         const parts = line.split(/\*\*(.*?)\*\*/g);
@@ -279,31 +279,31 @@ function PrayerPanel({ C, setShareModal }) {
   }
   function toggle(id) { const u = prayers.map(p => p.id===id ? {...p, answered:!p.answered} : p); setPrayers(u); localStorage.setItem("gospel_prayers", JSON.stringify(u)); }
   function del(id) { const u = prayers.filter(p => p.id!==id); setPrayers(u); localStorage.setItem("gospel_prayers", JSON.stringify(u)); }
-  const inp = { background:"rgba(255,255,255,.04)", border:"1px solid "+C.border, borderRadius:8, padding:"9px 12px", color:C.text, fontSize:13, fontFamily:"inherit", outline:"none", width:"100%", boxSizing:"border-box" };
+  const inp = { background:"rgba(255,255,255,.04)", border:"1px solid "+C.border, borderRadius:8, padding:"9px 12px", color:C.text, fontSize:19, fontFamily:"inherit", outline:"none", width:"100%", boxSizing:"border-box" };
   return (
     <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
       <div style={{padding:"14px 16px",borderBottom:"1px solid "+C.border,flexShrink:0}}>
-        <div style={{color:C.gold,fontWeight:"bold",fontSize:13,marginBottom:10}}>New Prayer</div>
+        <div style={{color:C.gold,fontWeight:"bold",fontSize:19,marginBottom:10}}>New Prayer</div>
         <input value={title} onChange={e=>setTitle(e.target.value)} placeholder="Title (optional)" style={{...inp,marginBottom:8}} />
         <textarea value={text} onChange={e=>setText(e.target.value)} placeholder="Write your prayer…" style={{...inp,height:80,resize:"none",lineHeight:1.5,marginBottom:8}} />
-        <button onClick={save} disabled={!text.trim()} style={{background:text.trim()?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.2)",border:"none",borderRadius:8,padding:"8px 20px",color:C.bg,fontSize:13,fontWeight:"bold",cursor:text.trim()?"pointer":"not-allowed",width:"100%",fontFamily:"inherit"}}>
+        <button onClick={save} disabled={!text.trim()} style={{background:text.trim()?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.2)",border:"none",borderRadius:8,padding:"8px 20px",color:C.bg,fontSize:19,fontWeight:"bold",cursor:text.trim()?"pointer":"not-allowed",width:"100%",fontFamily:"inherit"}}>
           Save Prayer
         </button>
       </div>
       <div style={{flex:1,overflowY:"auto",padding:"12px 16px",display:"flex",flexDirection:"column",gap:10}}>
-        {prayers.length===0 && <div style={{textAlign:"center",color:C.textMuted,fontSize:13,marginTop:40,fontStyle:"italic"}}>Your prayers will appear here</div>}
+        {prayers.length===0 && <div style={{textAlign:"center",color:C.textMuted,fontSize:19,marginTop:40,fontStyle:"italic"}}>Your prayers will appear here</div>}
         {prayers.map(p => (
           <div key={p.id} style={{background:p.answered?"rgba(60,180,100,.06)":"rgba(255,255,255,.025)",border:"1px solid "+(p.answered?"rgba(60,180,100,.2)":C.border),borderRadius:8,padding:"12px 14px"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
-              <div style={{color:C.text,fontWeight:"bold",fontSize:13,flex:1}}>{p.title}</div>
+              <div style={{color:C.text,fontWeight:"bold",fontSize:19,flex:1}}>{p.title}</div>
               <div style={{display:"flex",gap:5,flexShrink:0,marginLeft:8}}>
-                <button onClick={()=>setShareModal({type:"prayer",payload:{title:p.title,body:p.text}})} title="Share with a friend" style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",padding:3,fontSize:14}}>✉</button>
-                <button onClick={()=>toggle(p.id)} title={p.answered?"Unmark":"Mark answered"} style={{background:"none",border:"none",color:p.answered?"#6db86d":C.textMuted,cursor:"pointer",padding:3,fontSize:14}}>★</button>
-                <button onClick={()=>del(p.id)} style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",padding:3,fontSize:14}}>🗑</button>
+                <button onClick={()=>setShareModal({type:"prayer",payload:{title:p.title,body:p.text}})} title="Share with a friend" style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",padding:3,fontSize:21}}>✉</button>
+                <button onClick={()=>toggle(p.id)} title={p.answered?"Unmark":"Mark answered"} style={{background:"none",border:"none",color:p.answered?"#6db86d":C.textMuted,cursor:"pointer",padding:3,fontSize:21}}>★</button>
+                <button onClick={()=>del(p.id)} style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",padding:3,fontSize:21}}>🗑</button>
               </div>
             </div>
-            <div style={{color:C.textSec,fontSize:13,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{p.text}</div>
-            <div style={{color:C.textMuted,fontSize:10,marginTop:8,display:"flex",gap:8}}>
+            <div style={{color:C.textSec,fontSize:19,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{p.text}</div>
+            <div style={{color:C.textMuted,fontSize:21,marginTop:8,display:"flex",gap:8}}>
               <span>{p.date}</span>
               {p.answered && <span style={{color:"#6db86d",fontWeight:"bold"}}>✓ Answered</span>}
             </div>
@@ -326,32 +326,32 @@ function NotesPanel({ C, book, chapter, selectedVerses, setShareModal }) {
     const u = [n, ...notes]; setNotes(u); localStorage.setItem("gospel_notes", JSON.stringify(u)); setText(""); setTitle("");
   }
   function del(id) { const u = notes.filter(n=>n.id!==id); setNotes(u); localStorage.setItem("gospel_notes", JSON.stringify(u)); }
-  const inp = { background:"rgba(255,255,255,.04)", border:"1px solid "+C.border, borderRadius:8, padding:"9px 12px", color:C.text, fontSize:13, fontFamily:"inherit", outline:"none", width:"100%", boxSizing:"border-box" };
+  const inp = { background:"rgba(255,255,255,.04)", border:"1px solid "+C.border, borderRadius:8, padding:"9px 12px", color:C.text, fontSize:19, fontFamily:"inherit", outline:"none", width:"100%", boxSizing:"border-box" };
   return (
     <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
       <div style={{padding:"14px 16px",borderBottom:"1px solid "+C.border,flexShrink:0}}>
-        <div style={{color:C.gold,fontWeight:"bold",fontSize:13,marginBottom:4}}>New Study Note</div>
-        {selectedVerses.length>0 && <div style={{color:C.textMuted,fontSize:11,marginBottom:8}}>Linked to {ref}</div>}
+        <div style={{color:C.gold,fontWeight:"bold",fontSize:19,marginBottom:4}}>New Study Note</div>
+        {selectedVerses.length>0 && <div style={{color:C.textMuted,fontSize:19,marginBottom:8}}>Linked to {ref}</div>}
         <input value={title} onChange={e=>setTitle(e.target.value)} placeholder="Title (optional)" style={{...inp,marginBottom:8}} />
         <textarea value={text} onChange={e=>setText(e.target.value)} placeholder="Observations, reflections, study notes…" style={{...inp,height:80,resize:"none",lineHeight:1.5,marginBottom:8}} />
-        <button onClick={save} disabled={!text.trim()} style={{background:text.trim()?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.2)",border:"none",borderRadius:8,padding:"8px 20px",color:C.bg,fontSize:13,fontWeight:"bold",cursor:text.trim()?"pointer":"not-allowed",width:"100%",fontFamily:"inherit"}}>
+        <button onClick={save} disabled={!text.trim()} style={{background:text.trim()?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.2)",border:"none",borderRadius:8,padding:"8px 20px",color:C.bg,fontSize:19,fontWeight:"bold",cursor:text.trim()?"pointer":"not-allowed",width:"100%",fontFamily:"inherit"}}>
           Save Note
         </button>
       </div>
       <div style={{flex:1,overflowY:"auto",padding:"12px 16px",display:"flex",flexDirection:"column",gap:10}}>
-        {notes.length===0 && <div style={{textAlign:"center",color:C.textMuted,fontSize:13,marginTop:40,fontStyle:"italic"}}>Your study notes will appear here</div>}
+        {notes.length===0 && <div style={{textAlign:"center",color:C.textMuted,fontSize:19,marginTop:40,fontStyle:"italic"}}>Your study notes will appear here</div>}
         {notes.map(n => (
           <div key={n.id} style={{background:"rgba(255,255,255,.025)",border:"1px solid "+C.border,borderRadius:8,padding:"12px 14px"}}>
             <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
-              <div style={{color:C.text,fontWeight:"bold",fontSize:13,flex:1}}>{n.title}</div>
+              <div style={{color:C.text,fontWeight:"bold",fontSize:19,flex:1}}>{n.title}</div>
               <div style={{display:"flex",gap:5,flexShrink:0,marginLeft:8}}>
-                <button onClick={()=>setShareModal({type:"note",payload:{title:n.title,body:n.text}})} title="Share with a friend" style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",padding:3,fontSize:14}}>✉</button>
-                <button onClick={()=>del(n.id)} style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",padding:3,fontSize:14}}>🗑</button>
+                <button onClick={()=>setShareModal({type:"note",payload:{title:n.title,body:n.text}})} title="Share with a friend" style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",padding:3,fontSize:21}}>✉</button>
+                <button onClick={()=>del(n.id)} style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",padding:3,fontSize:21}}>🗑</button>
               </div>
             </div>
-            <div style={{color:C.gold,fontSize:11,marginBottom:6}}>{n.ref}</div>
-            <div style={{color:C.textSec,fontSize:13,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{n.text}</div>
-            <div style={{color:C.textMuted,fontSize:10,marginTop:8}}>{n.date}</div>
+            <div style={{color:C.gold,fontSize:19,marginBottom:6}}>{n.ref}</div>
+            <div style={{color:C.textSec,fontSize:19,lineHeight:1.6,whiteSpace:"pre-wrap"}}>{n.text}</div>
+            <div style={{color:C.textMuted,fontSize:21,marginTop:8}}>{n.date}</div>
           </div>
         ))}
       </div>
@@ -372,38 +372,38 @@ function ShareModal({ C, type, payload, myCode, friends, onClose }) {
     try { const ex = await sGet("inbox:"+to, true) || []; await sSet("inbox:"+to, [msg,...ex.slice(0,99)], true); setStatus("done"); setTimeout(onClose, 1400); }
     catch { setStatus("err"); }
   }
-  const inp = { background:"rgba(255,255,255,.04)", border:"1px solid "+C.border, borderRadius:8, padding:"8px 11px", color:C.text, fontSize:13, fontFamily:"inherit", outline:"none", width:"100%", boxSizing:"border-box" };
+  const inp = { background:"rgba(255,255,255,.04)", border:"1px solid "+C.border, borderRadius:8, padding:"8px 11px", color:C.text, fontSize:19, fontFamily:"inherit", outline:"none", width:"100%", boxSizing:"border-box" };
   return (
     <div onClick={onClose} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.88)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center"}}>
       <div onClick={e=>e.stopPropagation()} style={{background:C.surface,border:"1px solid "+C.gold,borderRadius:14,padding:24,width:"min(440px,94vw)",maxHeight:"88vh",overflowY:"auto",fontFamily:C.font}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:16}}>
-          <div style={{color:C.gold,fontWeight:"bold",fontSize:15}}>Share with a Friend</div>
-          <button onClick={onClose} style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",fontSize:18}}>✕</button>
+          <div style={{color:C.gold,fontWeight:"bold",fontSize:19}}>Share with a Friend</div>
+          <button onClick={onClose} style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",fontSize:21}}>✕</button>
         </div>
         <div style={{background:"rgba(255,255,255,.03)",border:"1px solid "+C.border,borderRadius:8,padding:"10px 12px",marginBottom:16}}>
-          <div style={{fontSize:11,color:C.gold,fontWeight:"bold",marginBottom:5}}>{typeLabel}</div>
-          <div style={{fontSize:12.5,color:C.textSec,lineHeight:1.6,maxHeight:72,overflow:"hidden"}}>{preview}</div>
+          <div style={{fontSize:19,color:C.gold,fontWeight:"bold",marginBottom:5}}>{typeLabel}</div>
+          <div style={{fontSize:21,color:C.textSec,lineHeight:1.6,maxHeight:72,overflow:"hidden"}}>{preview}</div>
         </div>
         {friends.length===0
-          ? <div style={{textAlign:"center",color:C.textMuted,fontSize:13,padding:"20px 0"}}>No friends yet. Add friends in the <strong style={{color:C.gold}}>Community</strong> tab.</div>
+          ? <div style={{textAlign:"center",color:C.textMuted,fontSize:19,padding:"20px 0"}}>No friends yet. Add friends in the <strong style={{color:C.gold}}>Community</strong> tab.</div>
           : <>
-            <div style={{fontSize:11,color:C.textMuted,marginBottom:8,letterSpacing:1,textTransform:"uppercase"}}>Send to:</div>
+            <div style={{fontSize:19,color:C.textMuted,marginBottom:8,letterSpacing:1,textTransform:"uppercase"}}>Send to:</div>
             <div style={{display:"flex",flexDirection:"column",gap:6,marginBottom:12,maxHeight:160,overflowY:"auto"}}>
               {friends.map(f=>(
                 <button key={f.code} onClick={()=>setTo(f.code)}
                   style={{background:to===f.code?"rgba(180,140,60,.14)":"rgba(255,255,255,.02)",border:"1px solid "+(to===f.code?C.gold:C.border),borderRadius:8,padding:"9px 12px",cursor:"pointer",textAlign:"left",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <div>
-                    <div style={{color:C.text,fontWeight:"bold",fontSize:13}}>{f.name}</div>
-                    <div style={{color:C.textMuted,fontSize:10,fontFamily:"monospace",marginTop:1}}>{f.code}</div>
+                    <div style={{color:C.text,fontWeight:"bold",fontSize:19}}>{f.name}</div>
+                    <div style={{color:C.textMuted,fontSize:21,fontFamily:"monospace",marginTop:1}}>{f.code}</div>
                   </div>
-                  {to===f.code && <span style={{color:C.gold,fontSize:16}}>✓</span>}
+                  {to===f.code && <span style={{color:C.gold,fontSize:21}}>✓</span>}
                 </button>
               ))}
             </div>
             <textarea value={note} onChange={e=>setNote(e.target.value)} placeholder="Add a personal message (optional)…"
               style={{...inp,height:60,resize:"none",lineHeight:1.5,marginBottom:12}} />
             <button onClick={doSend} disabled={!to||status!=="idle"}
-              style={{width:"100%",padding:"11px",borderRadius:9,border:"none",cursor:to&&status==="idle"?"pointer":"not-allowed",fontFamily:C.font,fontWeight:"bold",fontSize:14,
+              style={{width:"100%",padding:"11px",borderRadius:9,border:"none",cursor:to&&status==="idle"?"pointer":"not-allowed",fontFamily:C.font,fontWeight:"bold",fontSize:21,
                 background:status==="done"?"rgba(60,180,100,.25)":to&&status==="idle"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.15)",
                 color:status==="done"?"#6db86d":C.bg}}>
               {status==="idle"?"✉ Send":status==="sending"?"Sending…":status==="done"?"✓ Sent!":"Error — try again"}
@@ -441,26 +441,26 @@ function CommunityPanel({ C, myCode, friends, setFriends, inbox, setInbox }) {
   async function deleteMsg(id) { const u=inbox.filter(m=>m.id!==id); setInbox(u); await sSet("inbox:"+myCode,u,true); setViewMsg(null); }
   function copyCode() { navigator.clipboard.writeText(myCode).catch(()=>{}); setCopied(true); setTimeout(()=>setCopied(false),2000); }
 
-  const inp = { background:"rgba(255,255,255,.04)", border:"1px solid "+C.border, borderRadius:8, padding:"8px 11px", color:C.text, fontSize:13, fontFamily:"inherit", outline:"none", boxSizing:"border-box" };
-  const tabS = k => ({ flex:1,padding:"9px 4px",background:"none",border:"none",borderBottom:tab===k?"2px solid "+C.gold:"2px solid transparent",color:tab===k?C.gold:C.textMuted,cursor:"pointer",fontSize:11,fontWeight:tab===k?"bold":"normal",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:4 });
+  const inp = { background:"rgba(255,255,255,.04)", border:"1px solid "+C.border, borderRadius:8, padding:"8px 11px", color:C.text, fontSize:19, fontFamily:"inherit", outline:"none", boxSizing:"border-box" };
+  const tabS = k => ({ flex:1,padding:"9px 4px",background:"none",border:"none",borderBottom:tab===k?"2px solid "+C.gold:"2px solid transparent",color:tab===k?C.gold:C.textMuted,cursor:"pointer",fontSize:19,fontWeight:tab===k?"bold":"normal",fontFamily:"inherit",display:"flex",alignItems:"center",justifyContent:"center",gap:4 });
   const typeIcon = t => t==="prayer"?"🙏":t==="note"?"📝":"✦";
   const typeColor = t => t==="prayer"?"#6db86d":t==="note"?C.gold:"#a78bca";
 
   return (
     <div style={{display:"flex",flexDirection:"column",height:"100%"}}>
       <div style={{padding:"12px 16px",borderBottom:"1px solid "+C.border,flexShrink:0,background:"rgba(180,140,60,.04)"}}>
-        <div style={{fontSize:10,color:C.textMuted,letterSpacing:2,textTransform:"uppercase",marginBottom:4}}>Your Prayer Code</div>
+        <div style={{fontSize:21,color:C.textMuted,letterSpacing:2,textTransform:"uppercase",marginBottom:4}}>Your Prayer Code</div>
         <div style={{display:"flex",alignItems:"center",gap:8}}>
-          <span style={{fontFamily:"monospace",fontSize:20,fontWeight:"bold",color:C.gold,letterSpacing:3,flex:1}}>{myCode}</span>
-          <button onClick={copyCode} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,borderRadius:6,padding:"5px 10px",color:C.gold,cursor:"pointer",fontSize:11,fontFamily:"inherit"}}>{copied?"✓ Copied":"⎘ Copy"}</button>
+          <span style={{fontFamily:"monospace",fontSize:23,fontWeight:"bold",color:C.gold,letterSpacing:3,flex:1}}>{myCode}</span>
+          <button onClick={copyCode} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,borderRadius:6,padding:"5px 10px",color:C.gold,cursor:"pointer",fontSize:19,fontFamily:"inherit"}}>{copied?"✓ Copied":"⎘ Copy"}</button>
         </div>
-        <div style={{fontSize:11,color:C.textMuted,marginTop:3}}>Share this code so friends can send you prayers, notes & AI insights</div>
+        <div style={{fontSize:19,color:C.textMuted,marginTop:3}}>Share this code so friends can send you prayers, notes & AI insights</div>
       </div>
 
       <div style={{display:"flex",borderBottom:"1px solid "+C.border,flexShrink:0,background:"rgba(0,0,0,.1)"}}>
         <button style={tabS("friends")} onClick={()=>setTab("friends")}>👥 Friends ({friends.length})</button>
         <button style={tabS("inbox")} onClick={()=>{setTab("inbox");setViewMsg(null);}}>
-          📬 Inbox {unread>0&&<span style={{background:"#c05050",color:"#fff",borderRadius:10,fontSize:10,padding:"0 5px",fontWeight:"bold"}}>{unread}</span>}
+          📬 Inbox {unread>0&&<span style={{background:"#c05050",color:"#fff",borderRadius:10,fontSize:21,padding:"0 5px",fontWeight:"bold"}}>{unread}</span>}
         </button>
       </div>
 
@@ -468,27 +468,27 @@ function CommunityPanel({ C, myCode, friends, setFriends, inbox, setInbox }) {
         {tab==="friends" && (
           <div style={{padding:"14px 16px",display:"flex",flexDirection:"column",gap:12}}>
             <div style={{background:"rgba(255,255,255,.02)",border:"1px solid "+C.border,borderRadius:10,padding:"12px 14px"}}>
-              <div style={{color:C.gold,fontWeight:"bold",fontSize:12,marginBottom:10}}>Add a Friend by Code</div>
+              <div style={{color:C.gold,fontWeight:"bold",fontSize:21,marginBottom:10}}>Add a Friend by Code</div>
               <input value={newName} onChange={e=>setNewName(e.target.value)} placeholder="Nickname (optional)" style={{...inp,width:"100%",marginBottom:7}} />
               <div style={{display:"flex",gap:7}}>
                 <input value={newCode} onChange={e=>{setNewCode(e.target.value.toUpperCase().replace(/[^A-Z]/g,""));setAddErr("");}}
                   placeholder="e.g. BOLDROCK or GRACESTAR"
                   style={{...inp,flex:1,fontFamily:"monospace",textTransform:"uppercase"}}
                   onKeyDown={e=>e.key==="Enter"&&addFriend()} />
-                <button onClick={addFriend} style={{background:"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",border:"none",borderRadius:8,padding:"0 14px",color:C.bg,fontWeight:"bold",cursor:"pointer",fontSize:13,fontFamily:"inherit"}}>Add</button>
+                <button onClick={addFriend} style={{background:"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",border:"none",borderRadius:8,padding:"0 14px",color:C.bg,fontWeight:"bold",cursor:"pointer",fontSize:19,fontFamily:"inherit"}}>Add</button>
               </div>
-              {addErr&&<div style={{color:"#d08080",fontSize:12,marginTop:6}}>{addErr}</div>}
-              {addOk&&<div style={{color:"#6db86d",fontSize:12,marginTop:6}}>✓ {addOk}</div>}
+              {addErr&&<div style={{color:"#d08080",fontSize:21,marginTop:6}}>{addErr}</div>}
+              {addOk&&<div style={{color:"#6db86d",fontSize:21,marginTop:6}}>✓ {addOk}</div>}
             </div>
             {friends.length===0
-              ? <div style={{textAlign:"center",color:C.textMuted,fontSize:13,marginTop:16,fontStyle:"italic"}}>No friends yet. Add someone by their code above.</div>
+              ? <div style={{textAlign:"center",color:C.textMuted,fontSize:19,marginTop:16,fontStyle:"italic"}}>No friends yet. Add someone by their code above.</div>
               : friends.map(f=>(
                 <div key={f.code} style={{background:"rgba(255,255,255,.025)",border:"1px solid "+C.border,borderRadius:9,padding:"11px 14px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
                   <div>
-                    <div style={{color:C.text,fontWeight:"bold",fontSize:13}}>{f.name}</div>
-                    <div style={{color:C.textMuted,fontSize:10,fontFamily:"monospace",marginTop:2}}>{f.code}</div>
+                    <div style={{color:C.text,fontWeight:"bold",fontSize:19}}>{f.name}</div>
+                    <div style={{color:C.textMuted,fontSize:21,fontFamily:"monospace",marginTop:2}}>{f.code}</div>
                   </div>
-                  <button onClick={()=>removeFriend(f.code)} style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",fontSize:14,padding:4}}>🗑</button>
+                  <button onClick={()=>removeFriend(f.code)} style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",fontSize:21,padding:4}}>🗑</button>
                 </div>
               ))
             }
@@ -498,21 +498,21 @@ function CommunityPanel({ C, myCode, friends, setFriends, inbox, setInbox }) {
         {tab==="inbox" && !viewMsg && (
           <div style={{padding:"12px 16px",display:"flex",flexDirection:"column",gap:9}}>
             {inbox.length===0
-              ? <div style={{textAlign:"center",color:C.textMuted,fontSize:13,marginTop:40,fontStyle:"italic"}}>Your inbox is empty.<br/>When friends share with you, it'll appear here.</div>
+              ? <div style={{textAlign:"center",color:C.textMuted,fontSize:19,marginTop:40,fontStyle:"italic"}}>Your inbox is empty.<br/>When friends share with you, it'll appear here.</div>
               : inbox.map(m=>(
                 <div key={m.id} onClick={()=>markRead(m)}
                   style={{background:m.read?"rgba(255,255,255,.02)":"rgba(180,140,60,.06)",border:"1px solid "+(m.read?C.border:"rgba(180,140,60,.3)"),borderRadius:9,padding:"11px 13px",cursor:"pointer",position:"relative"}}>
                   {!m.read&&<div style={{position:"absolute",top:9,right:9,width:7,height:7,borderRadius:"50%",background:C.gold}} />}
                   <div style={{display:"flex",gap:7,alignItems:"center",marginBottom:4}}>
-                    <span style={{fontSize:15}}>{typeIcon(m.type)}</span>
+                    <span style={{fontSize:19}}>{typeIcon(m.type)}</span>
                     <div>
-                      <span style={{fontSize:11,color:typeColor(m.type),fontWeight:"bold"}}>{m.type==="prayer"?"Prayer":m.type==="note"?"Study Note":"Scholar AI"}</span>
-                      <span style={{fontSize:10,color:C.textMuted,marginLeft:7}}>from <code style={{fontFamily:"monospace"}}>{m.from}</code> · {m.date}</span>
+                      <span style={{fontSize:19,color:typeColor(m.type),fontWeight:"bold"}}>{m.type==="prayer"?"Prayer":m.type==="note"?"Study Note":"Scholar AI"}</span>
+                      <span style={{fontSize:21,color:C.textMuted,marginLeft:7}}>from <code style={{fontFamily:"monospace"}}>{m.from}</code> · {m.date}</span>
                     </div>
                   </div>
-                  <div style={{color:C.text,fontWeight:"bold",fontSize:13,marginBottom:2}}>{m.title}</div>
-                  <div style={{color:C.textSec,fontSize:12,lineHeight:1.5,overflow:"hidden",maxHeight:38,WebkitLineClamp:2,WebkitBoxOrient:"vertical",display:"-webkit-box"}}>{(m.body||"").slice(0,140)}</div>
-                  {m.note&&<div style={{marginTop:5,color:C.textMuted,fontSize:11,fontStyle:"italic"}}>"{m.note}"</div>}
+                  <div style={{color:C.text,fontWeight:"bold",fontSize:19,marginBottom:2}}>{m.title}</div>
+                  <div style={{color:C.textSec,fontSize:21,lineHeight:1.5,overflow:"hidden",maxHeight:38,WebkitLineClamp:2,WebkitBoxOrient:"vertical",display:"-webkit-box"}}>{(m.body||"").slice(0,140)}</div>
+                  {m.note&&<div style={{marginTop:5,color:C.textMuted,fontSize:19,fontStyle:"italic"}}>"{m.note}"</div>}
                 </div>
               ))
             }
@@ -522,19 +522,19 @@ function CommunityPanel({ C, myCode, friends, setFriends, inbox, setInbox }) {
         {tab==="inbox" && viewMsg && (
           <div style={{padding:"14px 16px",display:"flex",flexDirection:"column",gap:12}}>
             <div style={{display:"flex",gap:8}}>
-              <button onClick={()=>setViewMsg(null)} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,borderRadius:6,padding:"5px 10px",color:C.gold,cursor:"pointer",fontSize:12,fontFamily:"inherit"}}>← Back</button>
-              <button onClick={()=>deleteMsg(viewMsg.id)} style={{background:"rgba(180,60,60,.08)",border:"1px solid rgba(180,60,60,.2)",borderRadius:6,padding:"5px 10px",color:"#c08080",cursor:"pointer",fontSize:12,fontFamily:"inherit",marginLeft:"auto"}}>Delete</button>
+              <button onClick={()=>setViewMsg(null)} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,borderRadius:6,padding:"5px 10px",color:C.gold,cursor:"pointer",fontSize:21,fontFamily:"inherit"}}>← Back</button>
+              <button onClick={()=>deleteMsg(viewMsg.id)} style={{background:"rgba(180,60,60,.08)",border:"1px solid rgba(180,60,60,.2)",borderRadius:6,padding:"5px 10px",color:"#c08080",cursor:"pointer",fontSize:21,fontFamily:"inherit",marginLeft:"auto"}}>Delete</button>
             </div>
             <div style={{display:"flex",gap:8,alignItems:"center"}}>
-              <span style={{fontSize:18}}>{typeIcon(viewMsg.type)}</span>
+              <span style={{fontSize:21}}>{typeIcon(viewMsg.type)}</span>
               <div>
-                <div style={{color:typeColor(viewMsg.type),fontWeight:"bold",fontSize:12}}>{viewMsg.type==="prayer"?"Prayer":viewMsg.type==="note"?"Study Note":"Scholar AI Insight"}</div>
-                <div style={{color:C.textMuted,fontSize:11}}>from <code style={{fontFamily:"monospace"}}>{viewMsg.from}</code> · {viewMsg.date}</div>
+                <div style={{color:typeColor(viewMsg.type),fontWeight:"bold",fontSize:21}}>{viewMsg.type==="prayer"?"Prayer":viewMsg.type==="note"?"Study Note":"Scholar AI Insight"}</div>
+                <div style={{color:C.textMuted,fontSize:19}}>from <code style={{fontFamily:"monospace"}}>{viewMsg.from}</code> · {viewMsg.date}</div>
               </div>
             </div>
-            <div style={{color:C.gold,fontWeight:"bold",fontSize:16}}>{viewMsg.title}</div>
-            {viewMsg.note&&<div style={{background:"rgba(180,140,60,.05)",border:"1px solid rgba(180,140,60,.15)",borderRadius:7,padding:"9px 12px",color:C.textSec,fontSize:13,fontStyle:"italic"}}>"{viewMsg.note}"</div>}
-            <div style={{color:C.text,fontSize:14,lineHeight:1.8,whiteSpace:"pre-wrap"}}>
+            <div style={{color:C.gold,fontWeight:"bold",fontSize:21}}>{viewMsg.title}</div>
+            {viewMsg.note&&<div style={{background:"rgba(180,140,60,.05)",border:"1px solid rgba(180,140,60,.15)",borderRadius:7,padding:"9px 12px",color:C.textSec,fontSize:19,fontStyle:"italic"}}>"{viewMsg.note}"</div>}
+            <div style={{color:C.text,fontSize:21,lineHeight:1.8,whiteSpace:"pre-wrap"}}>
               {viewMsg.type==="ai" ? <MdText text={viewMsg.body||""} gold={C.gold} /> : viewMsg.body}
             </div>
           </div>
@@ -582,7 +582,7 @@ export default function BibleApp() {
   const C = THEMES[themeName];
   const panelOpen = panel !== null;
   const unread = inbox.filter(m=>!m.read).length;
-  const qBtn = { background:"rgba(180,140,60,0.1)", border:"1px solid rgba(180,140,60,0.28)", color:C.gold, padding:"5px 11px", borderRadius:14, cursor:"pointer", fontSize:12, fontFamily:"inherit", whiteSpace:"nowrap" };
+  const qBtn = { background:"rgba(180,140,60,0.1)", border:"1px solid rgba(180,140,60,0.28)", color:C.gold, padding:"5px 11px", borderRadius:14, cursor:"pointer", fontSize:21, fontFamily:"inherit", whiteSpace:"nowrap" };
 
   useEffect(() => {
     sGet("friends").then(f=>{ if(f) setFriends(f); });
@@ -594,7 +594,17 @@ export default function BibleApp() {
     return ()=>clearInterval(pollRef.current);
   }, [myCode]);
 
-  useEffect(() => { document.title = "Gospl"; }, []);
+  useEffect(() => {
+    document.title = "Gospl";
+    if (!document.querySelector('script[data-adsense]')) {
+      const s = document.createElement("script");
+      s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9989498051967113";
+      s.async = true;
+      s.crossOrigin = "anonymous";
+      s.setAttribute("data-adsense", "true");
+      document.head.appendChild(s);
+    }
+  }, []);
 
   async function loadVerses(b, ch, trans) {
     setLoading(true); setLoadError(false); setVerses([]); setSelectedVerses([]);
@@ -683,23 +693,23 @@ export default function BibleApp() {
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.96)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center"}}>
           <div style={{background:C.surface,border:"1px solid "+C.gold,borderRadius:20,padding:40,maxWidth:480,width:"92%",textAlign:"center",fontFamily:C.font}}>
             <div style={{fontSize:38,marginBottom:12}}>✝</div>
-            <div style={{color:C.gold,fontSize:22,fontWeight:"bold",marginBottom:6,letterSpacing:1}}>The Gospel</div>
-            <div style={{color:C.textSec,fontSize:13,marginBottom:32,lineHeight:1.7}}>Choose how you'd like to read today</div>
+            <div style={{color:C.gold,fontSize:25,fontWeight:"bold",marginBottom:6,letterSpacing:1}}>The Gospel</div>
+            <div style={{color:C.textSec,fontSize:19,marginBottom:32,lineHeight:1.7}}>Choose how you'd like to read today</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
               <button onClick={()=>{setLayoutMode("phone");localStorage.setItem("gospel_layout","phone");}}
                 style={{background:"rgba(255,255,255,.04)",border:"2px solid "+C.border,borderRadius:14,padding:"24px 16px",cursor:"pointer",textAlign:"center",transition:"border-color .2s",fontFamily:C.font}}>
                 <div style={{fontSize:36,marginBottom:10}}>📱</div>
-                <div style={{color:C.gold,fontWeight:"bold",fontSize:15,marginBottom:6}}>Phone</div>
-                <div style={{color:C.textMuted,fontSize:11,lineHeight:1.5}}>Single column,<br/>larger text,<br/>touch-friendly</div>
+                <div style={{color:C.gold,fontWeight:"bold",fontSize:19,marginBottom:6}}>Phone</div>
+                <div style={{color:C.textMuted,fontSize:19,lineHeight:1.5}}>Single column,<br/>larger text,<br/>touch-friendly</div>
               </button>
               <button onClick={()=>{setLayoutMode("laptop");localStorage.setItem("gospel_layout","laptop");}}
                 style={{background:"rgba(255,255,255,.04)",border:"2px solid "+C.border,borderRadius:14,padding:"24px 16px",cursor:"pointer",textAlign:"center",transition:"border-color .2s",fontFamily:C.font}}>
                 <div style={{fontSize:36,marginBottom:10}}>💻</div>
-                <div style={{color:C.gold,fontWeight:"bold",fontSize:15,marginBottom:6}}>Laptop / Desktop</div>
-                <div style={{color:C.textMuted,fontSize:11,lineHeight:1.5}}>Full width,<br/>side-by-side panels,<br/>compact header</div>
+                <div style={{color:C.gold,fontWeight:"bold",fontSize:19,marginBottom:6}}>Laptop / Desktop</div>
+                <div style={{color:C.textMuted,fontSize:19,lineHeight:1.5}}>Full width,<br/>side-by-side panels,<br/>compact header</div>
               </button>
             </div>
-            <div style={{color:C.textMuted,fontSize:11,marginTop:20}}>You can change this anytime in settings</div>
+            <div style={{color:C.textMuted,fontSize:19,marginTop:20}}>You can change this anytime in settings</div>
           </div>
         </div>
       )}
@@ -709,8 +719,8 @@ export default function BibleApp() {
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.9)",zIndex:1001,display:"flex",alignItems:"center",justifyContent:"center"}}>
           <div style={{background:C.surface,border:"1px solid "+C.gold,borderRadius:16,padding:32,maxWidth:440,width:"92%",textAlign:"center",fontFamily:C.font}}>
             <div style={{fontSize:32,marginBottom:10}}>✝</div>
-            <div style={{color:C.gold,fontSize:17,fontWeight:"bold",marginBottom:8}}>Support the Gospel</div>
-            <div style={{color:C.textSec,fontSize:13,lineHeight:1.7,marginBottom:20}}>
+            <div style={{color:C.gold,fontSize:19,fontWeight:"bold",marginBottom:8}}>Support the Gospel</div>
+            <div style={{color:C.textSec,fontSize:19,lineHeight:1.7,marginBottom:20}}>
               Would you like to watch a short ad?<br/>
               <strong style={{color:C.gold}}>100% of ad proceeds</strong> go directly toward developing this app and spreading the Gospel to the world. 🌍
             </div>
@@ -721,7 +731,7 @@ export default function BibleApp() {
                 const newCount = adUseCount + 1;
                 setAdUseCount(newCount); localStorage.setItem("gospel_ad_uses", String(newCount));
                 setAdDeclineCount(0); localStorage.setItem("gospel_ad_declines","0");
-              }} style={{background:"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",border:"none",borderRadius:10,padding:"13px",color:C.bg,fontSize:14,fontWeight:"bold",cursor:"pointer",fontFamily:"inherit"}}>
+              }} style={{background:"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",border:"none",borderRadius:10,padding:"13px",color:C.bg,fontSize:21,fontWeight:"bold",cursor:"pointer",fontFamily:"inherit"}}>
                 Yes, watch an ad ✦
               </button>
               <button onClick={()=>{
@@ -732,10 +742,10 @@ export default function BibleApp() {
                   const suppressUntil = adUseCount + 20;
                   setAdSuppressUntil(suppressUntil); localStorage.setItem("gospel_ad_suppress", String(suppressUntil));
                 }
-              }} style={{background:"rgba(255,255,255,.07)",border:"1px solid "+C.border,borderRadius:10,padding:"12px",color:C.text,fontSize:13,cursor:"pointer",fontFamily:"inherit",fontWeight:"500"}}>
+              }} style={{background:"rgba(255,255,255,.07)",border:"1px solid "+C.border,borderRadius:10,padding:"12px",color:C.text,fontSize:19,cursor:"pointer",fontFamily:"inherit",fontWeight:"500"}}>
                 No thanks{adDeclineCount===2?" (won't ask again for a while)":""}
               </button>
-              <button onClick={()=>{ setShowDonateModal(true); setShowAdPopup(false); }} style={{background:"none",border:"none",color:C.gold,fontSize:12,cursor:"pointer",fontFamily:"inherit",textDecoration:"underline"}}>
+              <button onClick={()=>{ setShowDonateModal(true); setShowAdPopup(false); }} style={{background:"none",border:"none",color:C.gold,fontSize:21,cursor:"pointer",fontFamily:"inherit",textDecoration:"underline"}}>
                 I'd rather donate directly
               </button>
             </div>
@@ -748,15 +758,15 @@ export default function BibleApp() {
         <div onClick={()=>setShowDonateModal(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.88)",zIndex:1001,display:"flex",alignItems:"center",justifyContent:"center"}}>
           <div onClick={e=>e.stopPropagation()} style={{background:C.surface,border:"1px solid "+C.gold,borderRadius:16,padding:32,maxWidth:420,width:"92%",textAlign:"center",fontFamily:C.font}}>
             <div style={{fontSize:32,marginBottom:10}}>❤</div>
-            <div style={{color:C.gold,fontSize:17,fontWeight:"bold",marginBottom:8}}>Donate to the Mission</div>
-            <div style={{color:C.textSec,fontSize:13,lineHeight:1.7,marginBottom:20}}>
+            <div style={{color:C.gold,fontSize:19,fontWeight:"bold",marginBottom:8}}>Donate to the Mission</div>
+            <div style={{color:C.textSec,fontSize:19,lineHeight:1.7,marginBottom:20}}>
               Your donation goes <strong style={{color:C.gold}}>100%</strong> toward developing this Bible app and spreading the Gospel worldwide. Every gift makes an eternal difference.
             </div>
             <button onClick={()=>{ window.open("https://www.paypal.com/donate","_blank"); setShowDonateModal(false); }}
-              style={{background:"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",border:"none",borderRadius:10,padding:"13px 28px",color:C.bg,fontSize:14,fontWeight:"bold",cursor:"pointer",width:"100%",marginBottom:10,fontFamily:"inherit"}}>
+              style={{background:"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",border:"none",borderRadius:10,padding:"13px 28px",color:C.bg,fontSize:21,fontWeight:"bold",cursor:"pointer",width:"100%",marginBottom:10,fontFamily:"inherit"}}>
               Give via PayPal ❤
             </button>
-            <button onClick={()=>setShowDonateModal(false)} style={{background:"none",border:"none",color:C.textMuted,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>Maybe later</button>
+            <button onClick={()=>setShowDonateModal(false)} style={{background:"none",border:"none",color:C.textMuted,fontSize:21,cursor:"pointer",fontFamily:"inherit"}}>Maybe later</button>
           </div>
         </div>
       )}
@@ -764,25 +774,25 @@ export default function BibleApp() {
       {showThemePicker&&(
         <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.85)",zIndex:998,display:"flex",alignItems:"center",justifyContent:"center"}} onClick={()=>setShowThemePicker(false)}>
           <div style={{background:C.surface,border:"1px solid "+C.gold,borderRadius:14,padding:28,maxWidth:480,width:"92%"}} onClick={e=>e.stopPropagation()}>
-            <div style={{color:C.gold,fontWeight:"bold",fontSize:17,marginBottom:4}}>🎨 Choose Your Theme</div>
-            <div style={{color:C.textMuted,fontSize:12,marginBottom:20}}>Customize the look and feel of your study</div>
+            <div style={{color:C.gold,fontWeight:"bold",fontSize:19,marginBottom:4}}>🎨 Choose Your Theme</div>
+            <div style={{color:C.textMuted,fontSize:21,marginBottom:20}}>Customize the look and feel of your study</div>
             <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
               {Object.values(THEMES).map(t=>(
                 <button key={t.name} onClick={()=>{setThemeName(t.name);setShowThemePicker(false);}}
                   style={{background:t.bg,border:"2px solid "+(themeName===t.name?t.gold:t.border),borderRadius:10,padding:"12px 14px",cursor:"pointer",textAlign:"left",transition:"border-color .2s"}}>
-                  <div style={{fontSize:20,marginBottom:4}}>{t.icon}</div>
-                  <div style={{color:t.gold,fontWeight:"bold",fontSize:13,marginBottom:2}}>{t.name}</div>
+                  <div style={{fontSize:23,marginBottom:4}}>{t.icon}</div>
+                  <div style={{color:t.gold,fontWeight:"bold",fontSize:19,marginBottom:2}}>{t.name}</div>
                   <div style={{display:"flex",gap:5,marginTop:6}}>
                     {[t.bg,t.gold,t.text,t.textSec].map((col,idx)=>(<div key={idx} style={{width:14,height:14,borderRadius:"50%",background:col,border:"1px solid "+t.border}}/>))}
                   </div>
-                  {themeName===t.name&&<div style={{color:t.gold,fontSize:10,marginTop:6}}>✓ Active</div>}
+                  {themeName===t.name&&<div style={{color:t.gold,fontSize:21,marginTop:6}}>✓ Active</div>}
                 </button>
               ))}
             </div>
             <div style={{borderTop:"1px solid "+C.border,marginTop:16,paddingTop:14}}>
-              <div style={{color:C.textMuted,fontSize:11,marginBottom:8}}>Layout mode: <strong style={{color:C.gold}}>{layoutMode==="phone"?"Phone":"Laptop / Desktop"}</strong></div>
+              <div style={{color:C.textMuted,fontSize:19,marginBottom:8}}>Layout mode: <strong style={{color:C.gold}}>{layoutMode==="phone"?"Phone":"Laptop / Desktop"}</strong></div>
               <button onClick={()=>{const m=layoutMode==="phone"?"laptop":"phone";setLayoutMode(m);localStorage.setItem("gospel_layout",m);setShowThemePicker(false);}}
-                style={{background:"rgba(180,140,60,.08)",border:"1px solid "+C.border,borderRadius:8,padding:"7px 14px",color:C.textSec,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>
+                style={{background:"rgba(180,140,60,.08)",border:"1px solid "+C.border,borderRadius:8,padding:"7px 14px",color:C.textSec,fontSize:21,cursor:"pointer",fontFamily:"inherit"}}>
                 Switch to {layoutMode==="phone"?"Laptop / Desktop":"Phone"} mode
               </button>
             </div>
@@ -791,41 +801,41 @@ export default function BibleApp() {
       )}
 
       {/* ── Header ── */}
-      <header style={{background:C.headerBg,borderBottom:"1px solid "+C.border,padding:"0 8px",display:"flex",alignItems:"center",gap:4,position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 20px rgba(0,0,0,.6)",height:52,flexShrink:0}}>
-        <button onClick={()=>setSidebarOpen(o=>!o)} style={{background:"none",border:"none",color:C.gold,fontSize:20,cursor:"pointer",padding:"0 6px",flexShrink:0}}>☰</button>
+      <header style={{background:C.headerBg,borderBottom:"1px solid "+C.border,padding:"0 8px",display:"flex",alignItems:"center",gap:4,position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 20px rgba(0,0,0,.6)",height:58,flexShrink:0}}>
+        <button onClick={()=>setSidebarOpen(o=>!o)} style={{background:"none",border:"none",color:C.gold,fontSize:23,cursor:"pointer",padding:"0 6px",flexShrink:0}}>☰</button>
         <div style={{flex:1,minWidth:0}}>
-          <div style={{fontSize:8,letterSpacing:3,color:C.textMuted,textTransform:"uppercase"}}>{isNT?"NT":"OT"} · {translation}</div>
+          <div style={{fontSize:21,letterSpacing:3,color:C.textMuted,textTransform:"uppercase"}}>{isNT?"NT":"OT"} · {translation}</div>
           <div style={{fontSize:layoutMode==="phone"?14:16,fontWeight:"bold",color:C.gold,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{book} — Ch.{chapter}</div>
         </div>
         {/* Chapter nav */}
         <div style={{display:"flex",gap:3,alignItems:"center",flexShrink:0}}>
-          <button onClick={()=>chapter>1&&setChapter(c=>c-1)} disabled={chapter<=1} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:26,height:26,borderRadius:4,cursor:chapter<=1?"not-allowed":"pointer",fontSize:14,opacity:chapter<=1?0.3:1,padding:0}}>‹</button>
-          <span style={{color:C.textMuted,fontSize:10,minWidth:28,textAlign:"center"}}>{chapter}/{totalCh}</span>
-          <button onClick={()=>chapter<totalCh&&setChapter(c=>c+1)} disabled={chapter>=totalCh} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:26,height:26,borderRadius:4,cursor:chapter>=totalCh?"not-allowed":"pointer",fontSize:14,opacity:chapter>=totalCh?0.3:1,padding:0}}>›</button>
+          <button onClick={()=>chapter>1&&setChapter(c=>c-1)} disabled={chapter<=1} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:30,height:30,borderRadius:4,cursor:chapter<=1?"not-allowed":"pointer",fontSize:21,opacity:chapter<=1?0.3:1,padding:0}}>‹</button>
+          <span style={{color:C.textMuted,fontSize:21,minWidth:28,textAlign:"center"}}>{chapter}/{totalCh}</span>
+          <button onClick={()=>chapter<totalCh&&setChapter(c=>c+1)} disabled={chapter>=totalCh} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:30,height:30,borderRadius:4,cursor:chapter>=totalCh?"not-allowed":"pointer",fontSize:21,opacity:chapter>=totalCh?0.3:1,padding:0}}>›</button>
         </div>
-        <button onClick={()=>setTranslation(t=>t==="KJV"?"WEB":"KJV")} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,padding:"4px 7px",borderRadius:10,cursor:"pointer",fontSize:10,fontWeight:"bold",flexShrink:0}}>{translation==="KJV"?"WEB":"KJV"}</button>
-        <button onClick={speakChapter} title="Read chapter aloud" style={{background:speakingIdx==="ch"?"rgba(201,168,76,0.25)":"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:13,flexShrink:0,padding:0}}>
+        <button onClick={()=>setTranslation(t=>t==="KJV"?"WEB":"KJV")} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,padding:"4px 7px",borderRadius:10,cursor:"pointer",fontSize:21,fontWeight:"bold",flexShrink:0}}>{translation==="KJV"?"WEB":"KJV"}</button>
+        <button onClick={speakChapter} title="Read chapter aloud" style={{background:speakingIdx==="ch"?"rgba(201,168,76,0.25)":"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:19,flexShrink:0,padding:0}}>
           {speakingIdx==="ch"?"◼":"🔈"}
         </button>
         {/* Donate */}
         <button onClick={()=>setShowDonateModal(true)} title="Donate to support the mission"
-          style={{background:"linear-gradient(135deg,rgba(180,140,60,.25),rgba(180,140,60,.15))",border:"1px solid "+C.gold,color:C.gold,padding:"4px 8px",borderRadius:12,cursor:"pointer",fontSize:10,fontWeight:"bold",flexShrink:0,display:"flex",alignItems:"center",gap:3}}>
+          style={{background:"linear-gradient(135deg,rgba(180,140,60,.25),rgba(180,140,60,.15))",border:"1px solid "+C.gold,color:C.gold,padding:"4px 8px",borderRadius:12,cursor:"pointer",fontSize:21,fontWeight:"bold",flexShrink:0,display:"flex",alignItems:"center",gap:3}}>
           <span>&#9829;</span>{layoutMode!=="phone"&&" Give"}
         </button>
         {/* Panel buttons */}
-        <button onClick={()=>togglePanel("ai")} style={{background:panel==="ai"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+C.gold,color:panel==="ai"?C.bg:C.gold,padding:"4px 8px",borderRadius:14,cursor:"pointer",fontSize:11,fontWeight:"bold",flexShrink:0}}>
+        <button onClick={()=>togglePanel("ai")} style={{background:panel==="ai"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+C.gold,color:panel==="ai"?C.bg:C.gold,padding:"4px 8px",borderRadius:14,cursor:"pointer",fontSize:19,fontWeight:"bold",flexShrink:0}}>
           {panel==="ai"?"✕":"✦"}{layoutMode!=="phone"&&(panel==="ai"?" Close":" Scholar")}
         </button>
         <button onClick={()=>togglePanel("prayer")} title="Prayer Journal"
-          style={{background:panel==="prayer"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(panel==="prayer"?C.gold:C.border),color:panel==="prayer"?C.bg:C.gold,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:14,flexShrink:0,padding:0}}>&#x1F64F;</button>
+          style={{background:panel==="prayer"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(panel==="prayer"?C.gold:C.border),color:panel==="prayer"?C.bg:C.gold,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:21,flexShrink:0,padding:0}}>&#x1F64F;</button>
         <button onClick={()=>togglePanel("notes")} title="Study Notes"
-          style={{background:panel==="notes"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(panel==="notes"?C.gold:C.border),color:panel==="notes"?C.bg:C.gold,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:14,flexShrink:0,padding:0}}>&#x1F4DD;</button>
-        <button onClick={()=>togglePanel("community")} title="Community" style={{background:panel==="community"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(unread>0||panel==="community"?C.gold:C.border),color:panel==="community"?C.bg:C.gold,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:14,flexShrink:0,padding:0,position:"relative"}}>
+          style={{background:panel==="notes"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(panel==="notes"?C.gold:C.border),color:panel==="notes"?C.bg:C.gold,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:21,flexShrink:0,padding:0}}>&#x1F4DD;</button>
+        <button onClick={()=>togglePanel("community")} title="Community" style={{background:panel==="community"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(unread>0||panel==="community"?C.gold:C.border),color:panel==="community"?C.bg:C.gold,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:21,flexShrink:0,padding:0,position:"relative"}}>
           &#x1F465;
-          {unread>0&&panel!=="community"&&<span style={{position:"absolute",top:-3,right:-3,background:"#c05050",color:"#fff",borderRadius:"50%",fontSize:8,width:13,height:13,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:"bold"}}>{unread}</span>}
+          {unread>0&&panel!=="community"&&<span style={{position:"absolute",top:-3,right:-3,background:"#c05050",color:"#fff",borderRadius:"50%",fontSize:21,width:13,height:13,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:"bold"}}>{unread}</span>}
         </button>
-        <button onClick={()=>setShowThemePicker(t=>!t)} title="Theme" style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:13,flexShrink:0,padding:0}}>&#x1F3A8;</button>
-        <button onClick={()=>{const m=layoutMode==="phone"?"laptop":"phone";setLayoutMode(m);localStorage.setItem("gospel_layout",m);}} title="Switch layout" style={{background:"rgba(180,140,60,.08)",border:"1px solid "+C.border,color:C.textMuted,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:12,flexShrink:0,padding:0}}>
+        <button onClick={()=>setShowThemePicker(t=>!t)} title="Theme" style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:19,flexShrink:0,padding:0}}>&#x1F3A8;</button>
+        <button onClick={()=>{const m=layoutMode==="phone"?"laptop":"phone";setLayoutMode(m);localStorage.setItem("gospel_layout",m);}} title="Switch layout" style={{background:"rgba(180,140,60,.08)",border:"1px solid "+C.border,color:C.textMuted,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:21,flexShrink:0,padding:0}}>
           {layoutMode==="phone"?"💻":"📱"}
         </button>
       </header>
@@ -834,17 +844,17 @@ export default function BibleApp() {
         {/* Book sidebar */}
         <aside style={{position:"fixed",top:0,left:sidebarOpen?0:-290,width:280,height:"100vh",background:C.sidebarBg,borderRight:"1px solid "+C.border,zIndex:200,transition:"left .3s ease",overflowY:"auto",paddingTop:54}}>
           <div style={{padding:"10px 16px 4px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-            <span style={{fontSize:10,letterSpacing:3,color:C.textMuted,textTransform:"uppercase"}}>Books of the Bible</span>
-            <button onClick={()=>setSidebarOpen(false)} style={{background:"none",border:"none",color:C.textMuted,fontSize:18,cursor:"pointer"}}>✕</button>
+            <span style={{fontSize:21,letterSpacing:3,color:C.textMuted,textTransform:"uppercase"}}>Books of the Bible</span>
+            <button onClick={()=>setSidebarOpen(false)} style={{background:"none",border:"none",color:C.textMuted,fontSize:21,cursor:"pointer"}}>✕</button>
           </div>
           {["OT","NT"].map(t=>(
             <div key={t}>
-              <div style={{padding:"10px 18px 5px",fontSize:9,letterSpacing:4,color:C.textMuted,textTransform:"uppercase",fontWeight:"bold",borderTop:"1px solid "+C.border,marginTop:4}}>
+              <div style={{padding:"10px 18px 5px",fontSize:19,letterSpacing:4,color:C.textMuted,textTransform:"uppercase",fontWeight:"bold",borderTop:"1px solid "+C.border,marginTop:4}}>
                 {t==="OT"?"Old Testament":"New Testament"}
               </div>
               {BOOKS[t].map(b=>(
                 <button key={b} onClick={()=>{setBook(b);setChapter(1);setSidebarOpen(false);}}
-                  style={{display:"block",width:"100%",textAlign:"left",padding:"8px 22px",background:b===book?"rgba(180,140,60,.14)":"none",border:"none",borderLeft:b===book?"3px solid "+C.gold:"3px solid transparent",color:b===book?C.gold:C.textSec,cursor:"pointer",fontSize:13.5,fontFamily:"inherit",transition:"all .15s"}}>
+                  style={{display:"block",width:"100%",textAlign:"left",padding:"8px 22px",background:b===book?"rgba(180,140,60,.14)":"none",border:"none",borderLeft:b===book?"3px solid "+C.gold:"3px solid transparent",color:b===book?C.gold:C.textSec,cursor:"pointer",fontSize:21,fontFamily:"inherit",transition:"all .15s"}}>
                   {b}
                 </button>
               ))}
@@ -854,10 +864,10 @@ export default function BibleApp() {
         {sidebarOpen&&<div onClick={()=>setSidebarOpen(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:199}}/>}
 
         {/* Bible text */}
-        <main style={{flex:1,padding:layoutMode==="phone"?"14px 12px 40px":"18px 24px 40px",width:"100%",overflowY:"auto",height:"calc(100vh - 52px)",boxSizing:"border-box"}}>
+        <main style={{flex:1,padding:layoutMode==="phone"?"14px 12px 40px":"18px 24px 40px",width:"100%",overflowY:"auto",height:"calc(100vh - 58px)",boxSizing:"border-box"}}>
           {selectedVerses.length>0&&(
             <div style={{background:"rgba(180,140,60,.07)",border:"1px solid rgba(180,140,60,.22)",borderRadius:8,padding:"10px 14px",marginBottom:16,display:"flex",gap:7,flexWrap:"wrap",alignItems:"center"}}>
-              <span style={{color:C.textMuted,fontSize:12}}>📌 {selectedVerses.length} verse{selectedVerses.length>1?"s":""} selected</span>
+              <span style={{color:C.textMuted,fontSize:21}}>📌 {selectedVerses.length} verse{selectedVerses.length>1?"s":""} selected</span>
               <button style={qBtn} onClick={()=>quickAsk("Explain the meaning of these verses in depth.")}>Explain</button>
               <button style={qBtn} onClick={()=>quickAsk("What are the original Greek or Hebrew words? Give transliterations and meanings.")}>Greek/Hebrew</button>
               <button style={qBtn} onClick={()=>quickAsk("What was the historical and cultural context when this was written?")}>History</button>
@@ -872,17 +882,17 @@ export default function BibleApp() {
           {loading?(
             <div style={{textAlign:"center",padding:"60px 20px",color:C.textMuted}}>
               <div style={{fontSize:30,marginBottom:14}}>📖</div>
-              <div style={{fontSize:14,fontStyle:"italic",color:C.textSec}}>Loading {book} {chapter}…</div>
+              <div style={{fontSize:21,fontStyle:"italic",color:C.textSec}}>Loading {book} {chapter}…</div>
             </div>
           ):loadError?(
             <div style={{textAlign:"center",padding:"60px 20px"}}>
               <div style={{fontSize:28,marginBottom:12}}>⚠️</div>
-              <div style={{fontSize:14,color:C.textSec,marginBottom:16}}>Could not load {book} {chapter}.<br/>Check your internet connection.</div>
-              <button onClick={()=>loadVerses(book,chapter,translation)} style={{...qBtn,padding:"8px 18px",fontSize:13}}>Try again</button>
+              <div style={{fontSize:21,color:C.textSec,marginBottom:16}}>Could not load {book} {chapter}.<br/>Check your internet connection.</div>
+              <button onClick={()=>loadVerses(book,chapter,translation)} style={{...qBtn,padding:"8px 18px",fontSize:19}}>Try again</button>
             </div>
           ):(
             <div>
-              <div style={{fontSize:10,letterSpacing:3,color:C.textMuted,marginBottom:14,textTransform:"uppercase"}}>
+              <div style={{fontSize:21,letterSpacing:3,color:C.textMuted,marginBottom:14,textTransform:"uppercase"}}>
                 {translation} · {verses.length} verses · Click to select
               </div>
               {verses.map(v=>{
@@ -890,8 +900,8 @@ export default function BibleApp() {
                 return(
                   <div key={v.verse} onClick={()=>toggleVerse(v.verse)}
                     style={{display:"flex",gap:14,marginBottom:10,padding:"10px 12px",borderRadius:6,cursor:"pointer",background:sel?C.verseSelBg:"rgba(255,255,255,.01)",border:"1px solid "+(sel?C.verseSelBorder:"transparent"),transition:"all .18s",lineHeight:1.8}}>
-                    <span style={{color:C.gold,fontSize:13,fontWeight:"bold",minWidth:28,marginTop:4,flexShrink:0}}>{v.verse}</span>
-                    <span style={{fontSize:18,color:sel?C.verseSelText:C.verseText,letterSpacing:0.2}}>{v.text}</span>
+                    <span style={{color:C.gold,fontSize:19,fontWeight:"bold",minWidth:28,marginTop:4,flexShrink:0}}>{v.verse}</span>
+                    <span style={{fontSize:21,color:sel?C.verseSelText:C.verseText,letterSpacing:0.2}}>{v.text}</span>
                   </div>
                 );
               })}
@@ -901,38 +911,38 @@ export default function BibleApp() {
 
         {/* Side panel */}
         {panelOpen&&(
-          <aside style={{width:layoutMode==="phone"?"100%":"42%",minWidth:layoutMode==="phone"?"100%":280,borderLeft:"1px solid "+C.border,display:"flex",flexDirection:"column",height:"calc(100vh - 52px)",position:"sticky",top:52,background:C.chatBg,flexShrink:0}}>
+          <aside style={{width:layoutMode==="phone"?"100%":"42%",minWidth:layoutMode==="phone"?"100%":280,borderLeft:"1px solid "+C.border,display:"flex",flexDirection:"column",height:"calc(100vh - 58px)",position:"sticky",top:58,background:C.chatBg,flexShrink:0}}>
 
             {/* Scholar AI */}
             {panel==="ai"&&(
               <>
                 <div style={{padding:"12px 16px",borderBottom:"1px solid "+C.border,flexShrink:0,display:"flex",justifyContent:"space-between",alignItems:"center"}}>
                   <div>
-                    <div style={{color:C.gold,fontWeight:"bold",fontSize:14}}>✦ Biblical Scholar AI</div>
-                    <div style={{color:C.textMuted,fontSize:11,marginTop:1}}>Powered by Gemini · Hebrew · Greek · History</div>
+                    <div style={{color:C.gold,fontWeight:"bold",fontSize:21}}>✦ Biblical Scholar AI</div>
+                    <div style={{color:C.textMuted,fontSize:19,marginTop:1}}>Powered by Gemini · Hebrew · Greek · History</div>
                   </div>
                   <div style={{display:"flex",gap:6}}>
                     <button onClick={()=>{const ai=messages.filter(m=>m.role==="assistant");if(ai.length)setShareModal({type:"ai",payload:{title:book+" "+chapter+" — Scholar AI",body:ai[ai.length-1].content}});}}
-                      style={{background:"none",border:"1px solid "+C.border,color:C.gold,fontSize:11,padding:"4px 8px",borderRadius:6,cursor:"pointer",fontFamily:"inherit"}}>✉ Share</button>
+                      style={{background:"none",border:"1px solid "+C.border,color:C.gold,fontSize:19,padding:"4px 8px",borderRadius:6,cursor:"pointer",fontFamily:"inherit"}}>✉ Share</button>
                   </div>
                 </div>
                 <div style={{flex:1,overflowY:"auto",padding:"14px 14px 6px",display:"flex",flexDirection:"column",gap:11}}>
                   {messages.map((m,i)=>(
                     <div key={i} style={{display:"flex",justifyContent:m.role==="user"?"flex-end":"flex-start",gap:8,alignItems:"flex-start"}}>
                       {m.role==="assistant"&&(
-                        <div style={{width:26,height:26,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11,flexShrink:0,marginTop:2}}>✦</div>
+                        <div style={{width:26,height:26,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:19,flexShrink:0,marginTop:2}}>✦</div>
                       )}
                       <div style={{maxWidth:"83%"}}>
-                        <div style={{padding:"10px 13px",borderRadius:m.role==="user"?"15px 15px 4px 15px":"15px 15px 15px 4px",background:m.role==="user"?"rgba(180,140,60,0.15)":"rgba(255,255,255,.035)",border:m.role==="user"?"none":"1px solid "+C.border,fontSize:13.5,lineHeight:1.65,color:m.role==="user"?C.gold:C.textSec,wordBreak:"break-word"}}>
+                        <div style={{padding:"10px 13px",borderRadius:m.role==="user"?"15px 15px 4px 15px":"15px 15px 15px 4px",background:m.role==="user"?"rgba(180,140,60,0.15)":"rgba(255,255,255,.035)",border:m.role==="user"?"none":"1px solid "+C.border,fontSize:21,lineHeight:1.65,color:m.role==="user"?C.gold:C.textSec,wordBreak:"break-word"}}>
                           {m.role==="assistant"?<MdText text={m.content} gold={C.gold}/>:m.content}
                         </div>
                         {m.role==="assistant"&&(
                           <div style={{display:"flex",gap:8,marginTop:4}}>
-                            <button onClick={()=>speakText(m.content,i)} style={{background:"none",border:"none",color:speakingIdx===i?C.gold:C.textMuted,cursor:"pointer",fontSize:12,padding:"2px 4px",fontFamily:"inherit"}}>
+                            <button onClick={()=>speakText(m.content,i)} style={{background:"none",border:"none",color:speakingIdx===i?C.gold:C.textMuted,cursor:"pointer",fontSize:21,padding:"2px 4px",fontFamily:"inherit"}}>
                               {speakingIdx===i?"◼ stop":"🔈 listen"}
                             </button>
                             <button onClick={()=>setShareModal({type:"ai",payload:{title:book+" "+chapter+" — Scholar AI",body:m.content}})}
-                              style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",fontSize:12,padding:"2px 4px",fontFamily:"inherit"}}>✉ share</button>
+                              style={{background:"none",border:"none",color:C.textMuted,cursor:"pointer",fontSize:21,padding:"2px 4px",fontFamily:"inherit"}}>✉ share</button>
                           </div>
                         )}
                       </div>
@@ -940,15 +950,15 @@ export default function BibleApp() {
                   ))}
                   {thinking&&(
                     <div style={{display:"flex",gap:8,alignItems:"center"}}>
-                      <div style={{width:26,height:26,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:11}}>✦</div>
-                      <span style={{color:C.textMuted,fontSize:13,fontStyle:"italic"}}>Consulting scriptures and scholars…</span>
+                      <div style={{width:26,height:26,borderRadius:"50%",background:"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",display:"flex",alignItems:"center",justifyContent:"center",fontSize:19}}>✦</div>
+                      <span style={{color:C.textMuted,fontSize:19,fontStyle:"italic"}}>Consulting scriptures and scholars…</span>
                     </div>
                   )}
                   <div ref={chatEnd}/>
                 </div>
                 <div style={{padding:"10px 12px 14px",borderTop:"1px solid "+C.border,flexShrink:0}}>
                   {selectedVerses.length>0&&(
-                    <div style={{fontSize:11,color:C.textMuted,marginBottom:7,padding:"3px 7px",background:"rgba(180,140,60,.05)",borderRadius:4}}>
+                    <div style={{fontSize:19,color:C.textMuted,marginBottom:7,padding:"3px 7px",background:"rgba(180,140,60,.05)",borderRadius:4}}>
                       📌 {book} {chapter}:{[...selectedVerses].sort((a,b)=>a-b).join(",")}
                     </div>
                   )}
@@ -956,9 +966,9 @@ export default function BibleApp() {
                     <textarea value={input} onChange={e=>setInput(e.target.value)}
                       onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send();}}}
                       placeholder="Ask about translation, history, theology…"
-                      style={{flex:1,background:"rgba(255,255,255,.04)",border:"1px solid "+C.border,borderRadius:10,padding:"9px 12px",color:C.text,fontSize:13.5,resize:"none",height:56,fontFamily:"inherit",outline:"none",lineHeight:1.5}}/>
+                      style={{flex:1,background:"rgba(255,255,255,.04)",border:"1px solid "+C.border,borderRadius:10,padding:"9px 12px",color:C.text,fontSize:21,resize:"none",height:56,fontFamily:"inherit",outline:"none",lineHeight:1.5}}/>
                     <button onClick={()=>send()} disabled={thinking||!input.trim()}
-                      style={{background:thinking||!input.trim()?"rgba(180,140,60,.15)":"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",border:"none",borderRadius:10,width:44,cursor:thinking||!input.trim()?"not-allowed":"pointer",color:C.bg,fontSize:18,fontWeight:"bold",flexShrink:0}}>
+                      style={{background:thinking||!input.trim()?"rgba(180,140,60,.15)":"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",border:"none",borderRadius:10,width:44,cursor:thinking||!input.trim()?"not-allowed":"pointer",color:C.bg,fontSize:21,fontWeight:"bold",flexShrink:0}}>
                       ▶
                     </button>
                   </div>
@@ -970,8 +980,8 @@ export default function BibleApp() {
             {panel==="prayer"&&(
               <>
                 <div style={{padding:"12px 16px",borderBottom:"1px solid "+C.border,flexShrink:0}}>
-                  <div style={{color:C.gold,fontWeight:"bold",fontSize:14}}>🙏 Prayer Journal</div>
-                  <div style={{color:C.textMuted,fontSize:11,marginTop:1}}>Write, save & share your prayers with friends</div>
+                  <div style={{color:C.gold,fontWeight:"bold",fontSize:21}}>🙏 Prayer Journal</div>
+                  <div style={{color:C.textMuted,fontSize:19,marginTop:1}}>Write, save & share your prayers with friends</div>
                 </div>
                 <PrayerPanel C={C} setShareModal={setShareModal}/>
               </>
@@ -981,8 +991,8 @@ export default function BibleApp() {
             {panel==="notes"&&(
               <>
                 <div style={{padding:"12px 16px",borderBottom:"1px solid "+C.border,flexShrink:0}}>
-                  <div style={{color:C.gold,fontWeight:"bold",fontSize:14}}>📝 Study Notes</div>
-                  <div style={{color:C.textMuted,fontSize:11,marginTop:1}}>Capture observations, reflections & insights</div>
+                  <div style={{color:C.gold,fontWeight:"bold",fontSize:21}}>📝 Study Notes</div>
+                  <div style={{color:C.textMuted,fontSize:19,marginTop:1}}>Capture observations, reflections & insights</div>
                 </div>
                 <NotesPanel C={C} book={book} chapter={chapter} selectedVerses={selectedVerses} setShareModal={setShareModal}/>
               </>
