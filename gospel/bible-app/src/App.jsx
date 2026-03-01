@@ -214,26 +214,20 @@ async function sSet(key, val, shared=false) {
 }
 
 // ── Gemini AI (original, unchanged) ──────────────────────────────────────────
-async function askGemini(history, systemPrompt, userKey) {
-  const apiKey = userKey || "";
-  const models = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.0-flash-lite"];
-  let lastErr = null;
-  for (const model of models) {
-    try {
-      const url = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + apiKey;
-      const contents = history.map(m => ({ role: m.role === "assistant" ? "model" : "user", parts: [{ text: m.content }] }));
-      const res = await fetch(url, {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ system_instruction: { parts: [{ text: systemPrompt }] }, contents, generationConfig: { temperature: 0.7, maxOutputTokens: 4096 } })
-      });
-      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e?.error?.message || "HTTP " + res.status); }
-      const data = await res.json();
-      const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!text) throw new Error("Empty response");
-      return text;
-    } catch(e) { lastErr = e; }
+async function askGemini(history, systemPrompt) {
+  // Calls our Vercel API route which holds the key server-side
+  const res = await fetch("/api/gemini", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ history, systemPrompt })
+  });
+  if (!res.ok) {
+    const e = await res.json().catch(() => ({}));
+    throw new Error(e?.error || "HTTP " + res.status);
   }
-  throw lastErr;
+  const data = await res.json();
+  if (!data.text) throw new Error("Empty response");
+  return data.text;
 }
 
 async function fetchWEB(book, chapter) {
@@ -659,7 +653,7 @@ export default function BibleApp() {
     const sys="You are a brilliant, warm Biblical scholar AI with expertise in Koine Greek and Biblical Hebrew/Aramaic, Ancient Near Eastern history, Church Fathers, Reformers, and modern scholars like N.T. Wright and F.F. Bruce. When explaining verses give original language words with transliteration, historical context, scholar references, and cross-references. Be warm and make the ancient text come alive. Currently studying: "+book+" Chapter "+chapter;
     const history=displayed.slice(1).map(m=>({role:m.role,content:m.content}));
     history[history.length-1]={role:"user",content:apiContent};
-    try{const reply=await askGemini(history,sys,"");setMessages([...displayed,{role:"assistant",content:reply}]);maybeShowAd();}
+    try{const reply=await askGemini(history,sys);setMessages([...displayed,{role:"assistant",content:reply}]);maybeShowAd();}
     catch(e){setMessages([...displayed,{role:"assistant",content:"Error: "+e.message+"\n\nYou can add your own Gemini key at aistudio.google.com/apikey using the Key button."}]);}
     setThinking(false);
   }
