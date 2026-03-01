@@ -287,7 +287,7 @@ export default function BibleApp(){
   });
 
   return(
-    <div style={{fontFamily:C.font,background:C.bg,minHeight:"100vh",color:C.text,display:"flex",flexDirection:"column"}}>
+    <div style={{fontFamily:C.font,background:C.bg,minHeight:"100vh",width:"100vw",color:C.text,display:"flex",flexDirection:"column",margin:0,padding:0}}>
       <div style={{position:"fixed",inset:0,background:C.bodyBg,pointerEvents:"none",zIndex:0}}/>
 
       {showThemePicker&&(
@@ -350,8 +350,7 @@ export default function BibleApp(){
         </button>
       </header>
 
-      <div style={{display:"flex",flex:1,position:"relative",zIndex:1,overflow:"hidden"}}>
-        {/* Sidebar */}
+      <div style={{display:"flex",flex:1,position:"relative",zIndex:1,overflow:"hidden",width:"100%"}}>
         <aside style={{position:"fixed",top:0,left:sidebarOpen?0:-290,width:280,height:"100vh",background:C.sidebarBg,borderRight:"1px solid "+C.border,zIndex:200,transition:"left .3s ease",overflowY:"auto",paddingTop:52}}>
           <div style={{padding:"10px 16px 4px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
             <span style={{fontSize:10,letterSpacing:3,color:C.textMuted,textTransform:"uppercase"}}>Books of the Bible</span>
@@ -486,7 +485,7 @@ export default function BibleApp(){
         )}
       </div>
 
-      <style>{`*{box-sizing:border-box}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:${C.scrollThumb};border-radius:3px}button:not(:disabled):hover{filter:brightness(1.15)}textarea:focus{border-color:rgba(180,140,60,.4)!important}input:focus{border-color:rgba(180,140,60,.4)!important;outline:none}`}</style>
+      <style>{`*{box-sizing:border-box;margin:0;padding:0}body,html{width:100%;overflow-x:hidden}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:${C.scrollThumb};border-radius:3px}button:not(:disabled):hover{filter:brightness(1.15)}textarea:focus{border-color:rgba(180,140,60,.4)!important}input:focus{border-color:rgba(180,140,60,.4)!important;outline:none}`}</style>
     </div>
   );
 }
