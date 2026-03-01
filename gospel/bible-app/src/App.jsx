@@ -558,6 +558,7 @@ export default function BibleApp() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [themeName, setThemeName] = useState("Parchment");
   const [showThemePicker, setShowThemePicker] = useState(false);
+  const [layoutMode, setLayoutMode] = useState(() => localStorage.getItem("gospel_layout") || null); // null = show picker
   // Scholar AI (original state)
   const [messages, setMessages] = useState([{role:"assistant",content:"Shalom! I'm your Biblical Scholar AI (powered by Gemini).\n\nClick any verse to select it, then tap a quick button or ask me anything:\n\n- Original Greek or Hebrew word meanings\n- Historical & cultural context\n- What scholars & theologians say\n- Cross-references & typology\n\nAll 66 books available. Toggle between KJV and WEB (World English Bible) using the button in the header."}]);
   const [input, setInput] = useState("");
@@ -592,6 +593,8 @@ export default function BibleApp() {
     pollRef.current = setInterval(()=>{ sGet("inbox:"+myCode,true).then(msgs=>{ if(msgs) setInbox(msgs); }); }, 30000);
     return ()=>clearInterval(pollRef.current);
   }, [myCode]);
+
+  useEffect(() => { document.title = "Gospl"; }, []);
 
   async function loadVerses(b, ch, trans) {
     setLoading(true); setLoadError(false); setVerses([]); setSelectedVerses([]);
@@ -670,10 +673,36 @@ export default function BibleApp() {
   const isNT=BOOKS.NT.includes(book);
 
   return(
-    <div style={{fontFamily:C.font,background:C.bg,minHeight:"100vh",color:C.text,display:"flex",flexDirection:"column"}}>
+    <div style={{fontFamily:C.font,background:C.bg,height:"100vh",width:"100vw",color:C.text,display:"flex",flexDirection:"column",overflow:"hidden"}}>
       <div style={{position:"fixed",inset:0,background:C.bodyBg,pointerEvents:"none",zIndex:0}}/>
 
       {shareModal&&<ShareModal C={C} type={shareModal.type} payload={shareModal.payload} myCode={myCode} friends={friends} onClose={()=>setShareModal(null)}/>}
+
+      {/* ── Layout Mode Picker (first launch) ── */}
+      {!layoutMode&&(
+        <div style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.96)",zIndex:2000,display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <div style={{background:C.surface,border:"1px solid "+C.gold,borderRadius:20,padding:40,maxWidth:480,width:"92%",textAlign:"center",fontFamily:C.font}}>
+            <div style={{fontSize:38,marginBottom:12}}>✝</div>
+            <div style={{color:C.gold,fontSize:22,fontWeight:"bold",marginBottom:6,letterSpacing:1}}>The Gospel</div>
+            <div style={{color:C.textSec,fontSize:13,marginBottom:32,lineHeight:1.7}}>Choose how you'd like to read today</div>
+            <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:14}}>
+              <button onClick={()=>{setLayoutMode("phone");localStorage.setItem("gospel_layout","phone");}}
+                style={{background:"rgba(255,255,255,.04)",border:"2px solid "+C.border,borderRadius:14,padding:"24px 16px",cursor:"pointer",textAlign:"center",transition:"border-color .2s",fontFamily:C.font}}>
+                <div style={{fontSize:36,marginBottom:10}}>📱</div>
+                <div style={{color:C.gold,fontWeight:"bold",fontSize:15,marginBottom:6}}>Phone</div>
+                <div style={{color:C.textMuted,fontSize:11,lineHeight:1.5}}>Single column,<br/>larger text,<br/>touch-friendly</div>
+              </button>
+              <button onClick={()=>{setLayoutMode("laptop");localStorage.setItem("gospel_layout","laptop");}}
+                style={{background:"rgba(255,255,255,.04)",border:"2px solid "+C.border,borderRadius:14,padding:"24px 16px",cursor:"pointer",textAlign:"center",transition:"border-color .2s",fontFamily:C.font}}>
+                <div style={{fontSize:36,marginBottom:10}}>💻</div>
+                <div style={{color:C.gold,fontWeight:"bold",fontSize:15,marginBottom:6}}>Laptop / Desktop</div>
+                <div style={{color:C.textMuted,fontSize:11,lineHeight:1.5}}>Full width,<br/>side-by-side panels,<br/>compact header</div>
+              </button>
+            </div>
+            <div style={{color:C.textMuted,fontSize:11,marginTop:20}}>You can change this anytime in settings</div>
+          </div>
+        </div>
+      )}
 
       {/* Ad Popup */}
       {showAdPopup&&(
@@ -750,46 +779,58 @@ export default function BibleApp() {
                 </button>
               ))}
             </div>
+            <div style={{borderTop:"1px solid "+C.border,marginTop:16,paddingTop:14}}>
+              <div style={{color:C.textMuted,fontSize:11,marginBottom:8}}>Layout mode: <strong style={{color:C.gold}}>{layoutMode==="phone"?"Phone":"Laptop / Desktop"}</strong></div>
+              <button onClick={()=>{const m=layoutMode==="phone"?"laptop":"phone";setLayoutMode(m);localStorage.setItem("gospel_layout",m);setShowThemePicker(false);}}
+                style={{background:"rgba(180,140,60,.08)",border:"1px solid "+C.border,borderRadius:8,padding:"7px 14px",color:C.textSec,fontSize:12,cursor:"pointer",fontFamily:"inherit"}}>
+                Switch to {layoutMode==="phone"?"Laptop / Desktop":"Phone"} mode
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* ── Header ── */}
-      <header style={{background:C.headerBg,borderBottom:"1px solid "+C.border,padding:"0 10px",display:"flex",alignItems:"center",gap:5,position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 20px rgba(0,0,0,.6)"}}>
-        <button onClick={()=>setSidebarOpen(o=>!o)} style={{background:"none",border:"none",color:C.gold,fontSize:20,cursor:"pointer",padding:"16px 6px"}}>☰</button>
+      <header style={{background:C.headerBg,borderBottom:"1px solid "+C.border,padding:"0 8px",display:"flex",alignItems:"center",gap:4,position:"sticky",top:0,zIndex:100,boxShadow:"0 2px 20px rgba(0,0,0,.6)",height:52,flexShrink:0}}>
+        <button onClick={()=>setSidebarOpen(o=>!o)} style={{background:"none",border:"none",color:C.gold,fontSize:20,cursor:"pointer",padding:"0 6px",flexShrink:0}}>☰</button>
         <div style={{flex:1,minWidth:0}}>
-          <div style={{fontSize:9,letterSpacing:4,color:C.textMuted,textTransform:"uppercase",marginBottom:1}}>{isNT?"New Testament":"Old Testament"} · {translation}</div>
-          <div style={{fontSize:17,fontWeight:"bold",color:C.gold,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{book} — Chapter {chapter}</div>
+          <div style={{fontSize:8,letterSpacing:3,color:C.textMuted,textTransform:"uppercase"}}>{isNT?"NT":"OT"} · {translation}</div>
+          <div style={{fontSize:layoutMode==="phone"?14:16,fontWeight:"bold",color:C.gold,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{book} — Ch.{chapter}</div>
         </div>
-        <div style={{display:"flex",gap:4,alignItems:"center",flexShrink:0}}>
-          <button onClick={()=>chapter>1&&setChapter(c=>c-1)} disabled={chapter<=1} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:28,height:28,borderRadius:4,cursor:chapter<=1?"not-allowed":"pointer",fontSize:14,opacity:chapter<=1?0.3:1}}>‹</button>
-          <span style={{color:C.textMuted,fontSize:11,minWidth:34,textAlign:"center"}}>{chapter}/{totalCh}</span>
-          <button onClick={()=>chapter<totalCh&&setChapter(c=>c+1)} disabled={chapter>=totalCh} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:28,height:28,borderRadius:4,cursor:chapter>=totalCh?"not-allowed":"pointer",fontSize:14,opacity:chapter>=totalCh?0.3:1}}>›</button>
+        {/* Chapter nav */}
+        <div style={{display:"flex",gap:3,alignItems:"center",flexShrink:0}}>
+          <button onClick={()=>chapter>1&&setChapter(c=>c-1)} disabled={chapter<=1} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:26,height:26,borderRadius:4,cursor:chapter<=1?"not-allowed":"pointer",fontSize:14,opacity:chapter<=1?0.3:1,padding:0}}>‹</button>
+          <span style={{color:C.textMuted,fontSize:10,minWidth:28,textAlign:"center"}}>{chapter}/{totalCh}</span>
+          <button onClick={()=>chapter<totalCh&&setChapter(c=>c+1)} disabled={chapter>=totalCh} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:26,height:26,borderRadius:4,cursor:chapter>=totalCh?"not-allowed":"pointer",fontSize:14,opacity:chapter>=totalCh?0.3:1,padding:0}}>›</button>
         </div>
-        <button onClick={()=>setTranslation(t=>t==="KJV"?"WEB":"KJV")} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,padding:"5px 9px",borderRadius:12,cursor:"pointer",fontSize:11,fontWeight:"bold",flexShrink:0}}>{translation==="KJV"?"WEB":"KJV"}</button>
-        <button onClick={speakChapter} style={{background:speakingIdx==="ch"?"rgba(201,168,76,0.25)":"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:30,height:30,borderRadius:"50%",cursor:"pointer",fontSize:14,flexShrink:0}}>
+        <button onClick={()=>setTranslation(t=>t==="KJV"?"WEB":"KJV")} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,padding:"4px 7px",borderRadius:10,cursor:"pointer",fontSize:10,fontWeight:"bold",flexShrink:0}}>{translation==="KJV"?"WEB":"KJV"}</button>
+        <button onClick={speakChapter} title="Read chapter aloud" style={{background:speakingIdx==="ch"?"rgba(201,168,76,0.25)":"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:13,flexShrink:0,padding:0}}>
           {speakingIdx==="ch"?"◼":"🔈"}
         </button>
+        {/* Donate */}
         <button onClick={()=>setShowDonateModal(true)} title="Donate to support the mission"
-          style={{background:"linear-gradient(135deg,rgba(180,140,60,.25),rgba(180,140,60,.15))",border:"1px solid "+C.gold,color:C.gold,padding:"5px 10px",borderRadius:14,cursor:"pointer",fontSize:11,fontWeight:"bold",flexShrink:0,display:"flex",alignItems:"center",gap:4}}>
-          <span style={{fontSize:13}}>&#9829;</span> Give
+          style={{background:"linear-gradient(135deg,rgba(180,140,60,.25),rgba(180,140,60,.15))",border:"1px solid "+C.gold,color:C.gold,padding:"4px 8px",borderRadius:12,cursor:"pointer",fontSize:10,fontWeight:"bold",flexShrink:0,display:"flex",alignItems:"center",gap:3}}>
+          <span>&#9829;</span>{layoutMode!=="phone"&&" Give"}
         </button>
-        <button onClick={()=>togglePanel("ai")} style={{background:panel==="ai"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+C.gold,color:panel==="ai"?C.bg:C.gold,padding:"6px 10px",borderRadius:16,cursor:"pointer",fontSize:12,fontWeight:"bold",flexShrink:0}}>
-          {panel==="ai"?"✕ Close":"✦ Scholar"}
+        {/* Panel buttons */}
+        <button onClick={()=>togglePanel("ai")} style={{background:panel==="ai"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+C.gold,color:panel==="ai"?C.bg:C.gold,padding:"4px 8px",borderRadius:14,cursor:"pointer",fontSize:11,fontWeight:"bold",flexShrink:0}}>
+          {panel==="ai"?"✕":"✦"}{layoutMode!=="phone"&&(panel==="ai"?" Close":" Scholar")}
         </button>
         <button onClick={()=>togglePanel("prayer")} title="Prayer Journal"
-          style={{background:panel==="prayer"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(panel==="prayer"?C.gold:C.border),color:panel==="prayer"?C.bg:C.gold,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:15,flexShrink:0}}>&#x1F64F;</button>
+          style={{background:panel==="prayer"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(panel==="prayer"?C.gold:C.border),color:panel==="prayer"?C.bg:C.gold,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:14,flexShrink:0,padding:0}}>&#x1F64F;</button>
         <button onClick={()=>togglePanel("notes")} title="Study Notes"
-          style={{background:panel==="notes"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(panel==="notes"?C.gold:C.border),color:panel==="notes"?C.bg:C.gold,width:32,height:32,borderRadius:"50%",cursor:"pointer",fontSize:15,flexShrink:0}}>&#x1F4DD;</button>
-        <button onClick={()=>togglePanel("community")} title="Community"
-          style={{background:panel==="community"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(unread>0||panel==="community"?C.gold:C.border),color:panel==="community"?C.bg:C.gold,padding:"6px 10px",borderRadius:16,cursor:"pointer",fontSize:12,fontWeight:"bold",flexShrink:0,position:"relative"}}>
-          &#x1F465; People
-          {unread>0&&panel!=="community"&&<span style={{position:"absolute",top:-4,right:-4,background:"#c05050",color:"#fff",borderRadius:"50%",fontSize:9,width:15,height:15,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:"bold"}}>{unread}</span>}
+          style={{background:panel==="notes"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(panel==="notes"?C.gold:C.border),color:panel==="notes"?C.bg:C.gold,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:14,flexShrink:0,padding:0}}>&#x1F4DD;</button>
+        <button onClick={()=>togglePanel("community")} title="Community" style={{background:panel==="community"?"linear-gradient(135deg,"+C.gold+","+C.darkGold+")":"rgba(180,140,60,.1)",border:"1px solid "+(unread>0||panel==="community"?C.gold:C.border),color:panel==="community"?C.bg:C.gold,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:14,flexShrink:0,padding:0,position:"relative"}}>
+          &#x1F465;
+          {unread>0&&panel!=="community"&&<span style={{position:"absolute",top:-3,right:-3,background:"#c05050",color:"#fff",borderRadius:"50%",fontSize:8,width:13,height:13,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:"bold"}}>{unread}</span>}
         </button>
-        <button onClick={()=>setShowThemePicker(t=>!t)} style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:30,height:30,borderRadius:"50%",cursor:"pointer",fontSize:14,flexShrink:0}}>&#x1F3A8;</button>
+        <button onClick={()=>setShowThemePicker(t=>!t)} title="Theme" style={{background:"rgba(180,140,60,.1)",border:"1px solid "+C.border,color:C.gold,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:13,flexShrink:0,padding:0}}>&#x1F3A8;</button>
+        <button onClick={()=>{const m=layoutMode==="phone"?"laptop":"phone";setLayoutMode(m);localStorage.setItem("gospel_layout",m);}} title="Switch layout" style={{background:"rgba(180,140,60,.08)",border:"1px solid "+C.border,color:C.textMuted,width:28,height:28,borderRadius:"50%",cursor:"pointer",fontSize:12,flexShrink:0,padding:0}}>
+          {layoutMode==="phone"?"💻":"📱"}
+        </button>
       </header>
 
-      <div style={{display:"flex",flex:1,position:"relative",zIndex:1}}>
+      <div style={{display:"flex",flex:1,position:"relative",zIndex:1,overflow:"hidden",width:"100%"}}>
         {/* Book sidebar */}
         <aside style={{position:"fixed",top:0,left:sidebarOpen?0:-290,width:280,height:"100vh",background:C.sidebarBg,borderRight:"1px solid "+C.border,zIndex:200,transition:"left .3s ease",overflowY:"auto",paddingTop:54}}>
           <div style={{padding:"10px 16px 4px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
@@ -813,7 +854,7 @@ export default function BibleApp() {
         {sidebarOpen&&<div onClick={()=>setSidebarOpen(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:199}}/>}
 
         {/* Bible text */}
-        <main style={{flex:1,padding:"18px 16px 40px",maxWidth:panelOpen?"52%":760,margin:"0 auto",width:"100%",transition:"max-width .3s",overflowY:"auto",height:"calc(100vh - 52px)"}}>
+        <main style={{flex:1,padding:layoutMode==="phone"?"14px 12px 40px":"18px 24px 40px",width:"100%",overflowY:"auto",height:"calc(100vh - 52px)",boxSizing:"border-box"}}>
           {selectedVerses.length>0&&(
             <div style={{background:"rgba(180,140,60,.07)",border:"1px solid rgba(180,140,60,.22)",borderRadius:8,padding:"10px 14px",marginBottom:16,display:"flex",gap:7,flexWrap:"wrap",alignItems:"center"}}>
               <span style={{color:C.textMuted,fontSize:12}}>📌 {selectedVerses.length} verse{selectedVerses.length>1?"s":""} selected</span>
@@ -860,7 +901,7 @@ export default function BibleApp() {
 
         {/* Side panel */}
         {panelOpen&&(
-          <aside style={{width:"44%",maxWidth:500,minWidth:300,borderLeft:"1px solid "+C.border,display:"flex",flexDirection:"column",height:"calc(100vh - 52px)",position:"sticky",top:52,background:C.chatBg,flexShrink:0}}>
+          <aside style={{width:layoutMode==="phone"?"100%":"42%",minWidth:layoutMode==="phone"?"100%":280,borderLeft:"1px solid "+C.border,display:"flex",flexDirection:"column",height:"calc(100vh - 52px)",position:"sticky",top:52,background:C.chatBg,flexShrink:0}}>
 
             {/* Scholar AI */}
             {panel==="ai"&&(
