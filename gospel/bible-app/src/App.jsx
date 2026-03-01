@@ -446,7 +446,7 @@ export default function BibleApp() {
         </aside>
         {sidebarOpen && <div onClick={() => setSidebarOpen(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,.5)",zIndex:199}} />}
 
-        <main style={{flex:1,padding:"18px 16px 40px",maxWidth:chatOpen?"54%":1100,margin:"0 auto",width:"100%",transition:"max-width .3s"}}>
+        <main style={{flex:1,padding:"18px 24px 40px",width:"100%",transition:"all .3s",minWidth:0}}>
           {selectedVerses.length > 0 && (
             <div style={{background:"rgba(180,140,60,.07)",border:"1px solid rgba(180,140,60,.22)",borderRadius:8,padding:"10px 14px",marginBottom:16,display:"flex",gap:7,flexWrap:"wrap",alignItems:"center"}}>
               <span style={{color:C.textMuted,fontSize:12}}>📌 {selectedVerses.length} verse{selectedVerses.length>1?"s":""} selected</span>
