@@ -762,7 +762,7 @@ export default function BibleApp() {
             <div style={{color:C.textSec,fontSize:19,lineHeight:1.7,marginBottom:20}}>
               Your donation goes <strong style={{color:C.gold}}>100%</strong> toward developing this Bible app and spreading the Gospel worldwide. Every gift makes an eternal difference.
             </div>
-            <button onClick={()=>{ window.open("https://www.paypal.com/donate","_blank"); setShowDonateModal(false); }}
+            <button onClick={()=>{ window.open("https://www.paypal.com/ncp/payment/RA8QM3UV8QU3S","_blank"); setShowDonateModal(false); }}
               style={{background:"linear-gradient(135deg,"+C.gold+","+C.darkGold+")",border:"none",borderRadius:10,padding:"13px 28px",color:C.bg,fontSize:21,fontWeight:"bold",cursor:"pointer",width:"100%",marginBottom:10,fontFamily:"inherit"}}>
               Give via PayPal ❤
             </button>
