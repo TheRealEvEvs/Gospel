@@ -216,7 +216,7 @@ async function sSet(key, val, shared=false) {
 // ── Gemini AI (original, unchanged) ──────────────────────────────────────────
 async function askGemini(history, systemPrompt) {
   // Calls our Vercel API route which holds the key server-side
-  const res = await fetch("/api/gemini", {
+  const res = await fetch("/api/geminibible", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ history, systemPrompt })
